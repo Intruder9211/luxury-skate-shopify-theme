@@ -1,0 +1,36 @@
+{% comment %}
+  This section is used in the 404 template to render page shown when customers
+  enter an invalid store URL.
+
+  https://shopify.dev/docs/storefronts/themes/architecture/templates/404
+{% endcomment %}
+
+<div class="container" style="padding: 7rem var(--page-margin); text-align: center; min-height: 60vh; display: flex; flex-direction: column; justify-content: center; align-items: center;">
+  <span style="font-size: 0.8rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--color-gold, #B89C72); font-weight: 600; margin-bottom: 1rem; display: block;">
+    Page Not Found
+  </span>
+
+  <h1 style="font-size: clamp(2.5rem, 5vw, 4rem); font-family: var(--font-heading-family); font-weight: 300; margin-bottom: 1.25rem;">
+    Lost in Motion?
+  </h1>
+
+  <p style="font-size: 1.05rem; color: #666666; max-width: 520px; line-height: 1.6; margin-bottom: 2.5rem;">
+    The page you are looking for has moved, expired, or doesn't exist yet. Explore our complete collection of boards, decks, and skate gear below.
+  </p>
+
+  <div style="display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center;">
+    <a href="{{ routes.all_products_collection_url }}" class="btn btn-primary" style="padding: 0.9rem 2rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em;">
+      Explore All Products
+    </a>
+    <a href="{{ routes.root_url }}" class="btn btn-outline" style="padding: 0.9rem 2rem; font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.15em;">
+      Return Home
+    </a>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "t:general.404",
+  "settings": []
+}
+{% endschema %}

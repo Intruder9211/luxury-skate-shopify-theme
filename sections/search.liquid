@@ -1,0 +1,75 @@
+<div class="container" style="padding-top: 3.5rem; padding-bottom: 5rem;">
+  <div style="max-width: 680px; margin: 0 auto 3rem; text-align: center;">
+    <span style="font-size: 0.72rem; letter-spacing: 0.2em; text-transform: uppercase; font-weight: 700; color: #B89C72; display: inline-block; margin-bottom: 0.5rem;">SEED ARCHIVE SEARCH</span>
+    <h1 style="font-family: var(--font-heading, 'Playfair Display', serif); font-size: 2.25rem; font-weight: 400; margin-bottom: 1.5rem; color: #141414;">Search Catalog</h1>
+
+    <form action="{{ routes.search_url }}" method="get" role="search" style="display: flex; gap: 0.75rem;">
+      <input
+        type="search"
+        name="q"
+        value="{{ search.terms | escape }}"
+        placeholder="Search skateboards, decks, wheels, trucks..."
+        aria-label="Search catalog"
+        class="customer-input-field"
+        style="padding: 0.9rem 1.25rem;"
+      >
+      <input type="hidden" name="type" value="product">
+      <input type="hidden" name="options[prefix]" value="last">
+      <button type="submit" class="btn btn-primary" style="flex-shrink: 0; padding: 0.9rem 1.75rem; letter-spacing: 0.12em; text-transform: uppercase; font-size: 0.8rem;">
+        Search
+      </button>
+    </form>
+  </div>
+
+  {% if search.performed %}
+    {% if search.results_count == 0 %}
+      <div style="text-align: center; padding: 3rem 1rem;">
+        <p style="font-size: 1.1rem; color: #64748b;">No results found for "{{ search.terms }}".</p>
+        <p style="color: #94a3b8; font-size: 0.95rem;">Check the spelling or try searching for another term.</p>
+        <a href="{{ routes.all_products_collection_url }}" class="btn btn-secondary" style="margin-top: 1rem;">Browse Products</a>
+      </div>
+    {% else %}
+      <div style="margin-bottom: 1.5rem; font-size: 0.95rem; color: #64748b; border-bottom: 1px solid var(--color-border); padding-bottom: 0.75rem;">
+        {{ search.results_count }} results found for "<strong>{{ search.terms }}</strong>"
+      </div>
+
+      {% paginate search.results by 16 %}
+        <div class="product-grid">
+          {% for item in search.results %}
+            {% if item.object_type == 'product' %}
+              {% render 'product-card', card_product: item %}
+            {% else %}
+              <div class="product-card" style="padding: 1.5rem; justify-content: center;">
+                <span style="font-size: 0.75rem; text-transform: uppercase; color: #64748b; font-weight: 700; margin-bottom: 0.5rem;">
+                  {{ item.object_type }}
+                </span>
+                <h3 style="font-size: 1.1rem; margin-bottom: 0.5rem;">
+                  <a href="{{ item.url }}">{{ item.title }}</a>
+                </h3>
+                <p style="font-size: 0.9rem; color: #64748b; margin-bottom: 1rem;">
+                  {{ item.content | strip_html | truncatewords: 20 }}
+                </p>
+                <a href="{{ item.url }}" class="btn btn-secondary" style="margin-top: auto; padding: 0.5rem 1rem; font-size: 0.85rem;">
+                  Read More
+                </a>
+              </div>
+            {% endif %}
+          {% endfor %}
+        </div>
+
+        {% if paginate.pages > 1 %}
+          <div style="display: flex; justify-content: center; margin-top: 3rem;">
+            {{ paginate | default_pagination }}
+          </div>
+        {% endif %}
+      {% endpaginate %}
+    {% endif %}
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Search Results",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,107 @@
+{% comment %}
+  Seed Luxury Jewelry Reusable Product Card Snippet
+  Accepts:
+  - card_product: {Object} Shopify Product Drop
+{% endcomment %}
+
+{% if card_product and card_product != empty %}
+  <div class="product-card" data-product-type="{{ card_product.type | escape }}" data-product-tags="{{ card_product.tags | join: ',' | downcase | escape }}" data-product-handle="{{ card_product.handle }}">
+    <div class="product-card__media">
+      {% if card_product.compare_at_price > card_product.price %}
+        <span class="product-card__badge">Fine Selection</span>
+      {% endif %}
+
+      <!-- Wishlist Heart Button -->
+      {% assign card_image_url = '' %}
+      {% if card_product.featured_media %}
+        {% assign card_image_url = card_product.featured_media | image_url: width: 300 %}
+      {% elsif variant_sku != blank %}
+        {% assign card_image_url = sku_image_asset | asset_url %}
+      {% endif %}
+      <button
+        type="button"
+        class="product-card__wishlist-btn"
+        data-wishlist-btn
+        data-product-id="{{ card_product.id }}"
+        data-product-title="{{ card_product.title | escape }}"
+        data-product-price="{{ card_product.price | money }}"
+        data-product-url="{{ card_product.url }}"
+        data-product-image="{{ card_image_url }}"
+        data-variant-id="{{ card_product.selected_or_first_available_variant.id }}"
+        aria-label="Add to Wishlist"
+      >
+        <svg class="wishlist-heart-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="18" height="18">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+        </svg>
+      </button>
+
+      <a href="{{ card_product.url }}" class="product-card__link-media">
+        {% assign variant_sku = card_product.selected_or_first_available_variant.sku %}
+        {% assign sku_image_asset = variant_sku | append: '.png' %}
+        {% if card_product.featured_media %}
+          <img
+            src="{{ card_product.featured_media | image_url: width: 600 }}"
+            alt="{{ card_product.featured_media.alt | default: card_product.title | escape }}"
+            loading="lazy"
+            width="400"
+            height="500"
+          >
+        {% elsif variant_sku != blank %}
+          <img
+            src="{{ sku_image_asset | asset_url }}"
+            alt="{{ card_product.title | escape }}"
+            loading="lazy"
+            width="400"
+            height="500"
+            onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+          >
+          <div class="product-card__fallback-placeholder" style="display:none;width:100%;height:100%;background:#F4F3EF;align-items:center;justify-content:center;color:#8c827a;font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;text-align:center;padding:1rem;">
+            {{ card_product.title }}
+          </div>
+        {% else %}
+          <div class="product-card__fallback-placeholder" style="width:100%;height:100%;background:#F4F3EF;display:flex;align-items:center;justify-content:center;color:#8c827a;font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;text-align:center;padding:1rem;">
+            {{ card_product.title }}
+          </div>
+        {% endif %}
+      </a>
+    </div>
+
+    <div class="product-card__content">
+      <div class="product-card__vendor">
+        {{ card_product.vendor | default: 'StreetRide' }}
+      </div>
+
+      <h3 class="product-card__title">
+        <a href="{{ card_product.url }}">{{ card_product.title }}</a>
+      </h3>
+
+      <div class="product-card__price-wrapper">
+        <span class="product-card__price">{{ card_product.price | money }}</span>
+        {% if card_product.compare_at_price > card_product.price %}
+          <span style="text-decoration:line-through;color:#94a3b8;font-size:0.85rem;">{{ card_product.compare_at_price | money }}</span>
+        {% endif %}
+      </div>
+
+      <div style="margin-top:1rem;">
+        {% if card_product.available %}
+          {% if card_product.has_only_default_variant %}
+            <form method="post" action="{{ routes.cart_add_url }}">
+              <input type="hidden" name="id" value="{{ card_product.selected_or_first_available_variant.id }}">
+              <button type="submit" class="btn btn-outline btn-full" style="padding:0.6rem 1rem;font-size:0.75rem;">
+                Add To Cart
+              </button>
+            </form>
+          {% else %}
+            <a href="{{ card_product.url }}" class="btn btn-outline btn-full" style="padding:0.6rem 1rem;font-size:0.75rem;">
+              View Details
+            </a>
+          {% endif %}
+        {% else %}
+          <button type="button" class="btn btn-outline btn-full" style="padding:0.6rem 1rem;font-size:0.75rem;opacity:0.5;cursor:not-allowed;" disabled>
+            Waitlist
+          </button>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+{% endif %}

@@ -1,0 +1,99 @@
+{% comment %}
+  Seed Jewelry Off-Canvas Navigation Drawer (Opens from Left)
+  Explicitly mapped to your 11 store catalog categories from CSV:
+  - Complete Skateboards
+  - Cruiser Skateboards
+  - Skateboard Decks
+  - Wheels
+  - Bearings
+  - Trucks
+  - Grip Tape & Hardware
+  - Tools & Accessories
+  - Protective Gear
+  - Apparel
+  - Maintenance & Storage
+{% endcomment %}
+
+<div id="NavDrawer" class="nav-drawer" aria-modal="true" role="dialog" aria-label="Navigation Menu">
+  <div class="nav-drawer__overlay" data-nav-drawer-close></div>
+  <div class="nav-drawer__panel">
+    <!-- Close Button -->
+    <div class="nav-drawer__top">
+      <button type="button" class="nav-drawer__close" data-nav-drawer-close aria-label="Close menu">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="22" height="22">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Multi-Column Links Area -->
+    <div class="nav-drawer__content">
+      <div class="nav-drawer__columns">
+        <!-- Column 1: Boards & Hardware Categories -->
+        <div class="nav-drawer__col">
+          <div class="nav-drawer__col-title">
+            Skateboards & Parts
+          </div>
+          <ul class="nav-drawer__list">
+            <li><a href="{{ routes.all_products_collection_url }}?filter.p.product_type=Complete+Skateboard" class="nav-drawer__link">Complete Skateboards</a></li>
+            <li><a href="{{ routes.all_products_collection_url }}?filter.p.product_type=Cruiser+Skateboard" class="nav-drawer__link">Cruiser Skateboards</a></li>
+            <li><a href="{{ routes.all_products_collection_url }}?filter.p.product_type=Skateboard+Deck" class="nav-drawer__link">Skateboard Decks</a></li>
+            <li><a href="{{ routes.all_products_collection_url }}?filter.p.product_type=Skateboard+Wheels" class="nav-drawer__link">Wheels</a></li>
+            <li><a href="{{ routes.all_products_collection_url }}?filter.p.product_type=Skateboard+Bearings" class="nav-drawer__link">Bearings</a></li>
+            <li><a href="{{ routes.all_products_collection_url }}?filter.p.product_type=Skateboard+Trucks" class="nav-drawer__link">Trucks</a></li>
+          </ul>
+
+          <div style="margin-top: 2rem;">
+            {% if section.settings.about_link != blank %}
+              <a href="{{ section.settings.about_link }}" class="nav-drawer__sub-link">
+                {{ section.settings.about_title | default: 'About StreetRide' }}
+              </a>
+            {% else %}
+              <a href="/pages/about" class="nav-drawer__sub-link">{{ section.settings.about_title | default: 'About StreetRide' }}</a>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Column 2: Gear, Apparel & Maintenance Categories -->
+        <div class="nav-drawer__col">
+          <div class="nav-drawer__col-title">
+            Gear & Accessories
+          </div>
+          <ul class="nav-drawer__list">
+            <li><a href="{{ routes.all_products_collection_url }}?filter.p.product_type=Grip+Tape&filter.p.product_type=Skateboard+Hardware" class="nav-drawer__link">Grip Tape & Hardware</a></li>
+            <li><a href="{{ routes.all_products_collection_url }}?filter.p.product_type=Skateboard+Tools&filter.p.product_type=Skateboard+Accessories" class="nav-drawer__link">Tools & Accessories</a></li>
+            <li><a href="{{ routes.all_products_collection_url }}?filter.p.product_type=Protective+Gear" class="nav-drawer__link">Protective Gear</a></li>
+            <li><a href="{{ routes.all_products_collection_url }}?filter.p.product_type=Skate+Apparel" class="nav-drawer__link">Apparel</a></li>
+            <li><a href="{{ routes.all_products_collection_url }}?filter.p.product_type=Skateboard+Maintenance&filter.p.product_type=Skateboard+Storage&filter.p.product_type=Skateboard+Parts&filter.p.product_type=Skateboard+Bags" class="nav-drawer__link">Maintenance & Storage</a></li>
+            <li><a href="{{ routes.all_products_collection_url }}" class="nav-drawer__link active-pill">View All 64 Products</a></li>
+          </ul>
+
+          <div style="margin-top: 2rem;">
+            {% if section.settings.contact_link != blank %}
+              <a href="{{ section.settings.contact_link }}" class="nav-drawer__sub-link">
+                {{ section.settings.contact_title | default: 'Contact Support' }}
+              </a>
+            {% else %}
+              <a href="mailto:{{ shop.email | default: 'support@streetride.com' }}" class="nav-drawer__sub-link">{{ section.settings.contact_title | default: 'Contact Support' }}</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom Localization & Policy Links -->
+    <div class="nav-drawer__footer">
+      <div class="nav-drawer__localization">
+        <span>Deliver to: <strong>{{ localization.country.name }} ({{ localization.country.currency.iso_code }}) &bull; {{ localization.language.endonym_name | capitalize }}</strong> &or;</span>
+      </div>
+
+      <div class="nav-drawer__legal">
+        {% for policy in shop.policies %}
+          <a href="{{ policy.url }}">{{ policy.title }}</a>
+        {% else %}
+          <a href="{{ routes.root_url }}">Store Policies</a>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,47 @@
+<section class="brand-manifesto">
+  <div class="container">
+    {% if section.settings.pretitle != blank %}
+      <span class="brand-manifesto__pretitle">{{ section.settings.pretitle }}</span>
+    {% endif %}
+
+    <blockquote class="brand-manifesto__quote">
+      "{{ section.settings.quote }}"
+    </blockquote>
+
+    {% if section.settings.author != blank %}
+      <p class="brand-manifesto__author">{{ section.settings.author }}</p>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Brand Manifesto",
+  "settings": [
+    {
+      "type": "text",
+      "id": "pretitle",
+      "label": "Overline Label",
+      "default": "The Seed Philosophy"
+    },
+    {
+      "type": "textarea",
+      "id": "quote",
+      "label": "Quote / Manifesto Text",
+      "default": "We believe luxury should be pure, thoughtful, and in harmony with the Earth. Every lab-grown diamond is a testament to what is possible when science honors nature."
+    },
+    {
+      "type": "text",
+      "id": "author",
+      "label": "Attribution / Subtext",
+      "default": "Crafted with 100% Recycled Gold & Ethical Lab Diamonds"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Brand Manifesto"
+    }
+  ]
+}
+{% endschema %}
+

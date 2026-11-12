@@ -1,0 +1,29 @@
+<div id="WishlistDrawer" class="nav-drawer" aria-modal="true" role="dialog" aria-label="Wishlist" style="display:none;">
+  <div class="nav-drawer__overlay" data-wishlist-drawer-close></div>
+  <div class="nav-drawer__panel" style="max-width: 420px; right: 0; left: auto; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);">
+    <div class="nav-drawer__top" style="display: flex; justify-content: space-between; align-items: center; padding: 1.5rem; border-bottom: 1px solid var(--color-border, #E8E6E1);">
+      <h3 style="font-size: 1rem; text-transform: uppercase; letter-spacing: 0.15em; font-family: var(--font-primary--family); font-weight: 600; margin: 0;">
+        My Wishlist (<span class="site-header__wishlist-count">0</span>)
+      </h3>
+      <button type="button" class="nav-drawer__close" data-wishlist-drawer-close aria-label="Close wishlist" style="background: none; border: none; font-size: 1.5rem; cursor: pointer; color: #141414;">
+        &times;
+      </button>
+    </div>
+
+    <div class="wishlist-drawer__content" style="padding: 1.5rem; overflow-y: auto; max-height: calc(100vh - 140px);">
+      <div id="WishlistDrawerItems" style="display: flex; flex-direction: column; gap: 1rem;">
+        <!-- Populated via header.js -->
+      </div>
+      <div id="WishlistDrawerEmpty" style="text-align: center; padding: 3rem 1rem;">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="36" height="36" style="margin: 0 auto 1rem; color: #B89C72;">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+        </svg>
+        <p style="font-size: 0.95rem; color: #666666; margin-bottom: 1.5rem;">Your wishlist is currently empty.</p>
+        <a href="{{ routes.all_products_collection_url }}" class="btn btn-outline" style="font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.15em;" data-wishlist-drawer-close>
+          Explore Catalog
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+

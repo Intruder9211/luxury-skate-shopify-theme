@@ -1,0 +1,87 @@
+<div class="container" style="padding-top: 3rem; padding-bottom: 5rem; max-width: 960px;">
+  <h1 style="margin-bottom: 2rem;">{{ 'cart.title' | t }}</h1>
+
+  {% if cart.item_count == 0 %}
+    <div style="text-align: center; padding: 4rem 1rem; border: 1px dashed var(--color-border); border-radius: var(--border-radius);">
+      <p style="font-size: 1.25rem; color: #64748b; margin-bottom: 1.5rem;">Your cart is currently empty.</p>
+      <a href="{{ routes.all_products_collection_url }}" class="btn btn-primary">Start Shopping</a>
+    </div>
+  {% else %}
+    <form action="{{ routes.cart_url }}" method="post" id="cart">
+      <div style="border: 1px solid var(--color-border); border-radius: var(--border-radius); overflow: hidden; margin-bottom: 2rem;">
+        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+          <thead>
+            <tr style="background-color: var(--color-secondary-bg); border-bottom: 1px solid var(--color-border);">
+              <th style="padding: 1rem 1.5rem;">Product</th>
+              <th style="padding: 1rem; text-align: center;">Quantity</th>
+              <th style="padding: 1rem 1.5rem; text-align: right;">Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for item in cart.items %}
+              <tr style="border-bottom: 1px solid var(--color-border);">
+                <td style="padding: 1.5rem; display: flex; gap: 1.25rem; align-items: center;">
+                  {% if item.image %}
+                    <img src="{{ item.image | image_url: width: 180 }}" alt="{{ item.title | escape }}" style="width: 80px; height: 80px; object-fit: cover; border-radius: var(--border-radius-sm);" width="80" height="80">
+                  {% endif %}
+                  <div>
+                    <h3 style="font-size: 1rem; margin-bottom: 0.25rem;">
+                      <a href="{{ item.url }}">{{ item.product.title }}</a>
+                    </h3>
+                    {% unless item.product.has_only_default_variant %}
+                      <div style="font-size: 0.85rem; color: #64748b; margin-bottom: 0.5rem;">{{ item.variant.title }}</div>
+                    {% endunless %}
+                    <div style="color: #64748b; font-size: 0.9rem;">{{ item.original_price | money }}</div>
+                    <a href="{{ item.url_to_remove }}" style="font-size: 0.8rem; color: var(--color-sale); text-decoration: underline; margin-top: 0.25rem; display: inline-block;">
+                      {{ 'cart.remove' | t }}
+                    </a>
+                  </div>
+                </td>
+                <td style="padding: 1.5rem; text-align: center; vertical-align: middle;">
+                  <input
+                    type="number"
+                    name="updates[]"
+                    value="{{ item.quantity }}"
+                    min="0"
+                    style="width: 70px; text-align: center; display: inline-block;"
+                    aria-label="Quantity for {{ item.title }}"
+                  >
+                </td>
+                <td style="padding: 1.5rem; text-align: right; vertical-align: middle; font-weight: 700; font-size: 1.05rem;">
+                  {{ item.final_line_price | money }}
+                </td>
+              </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 2rem;">
+        <button type="submit" name="update" class="btn btn-secondary">
+          Update Cart
+        </button>
+
+        <div style="max-width: 360px; width: 100%; text-align: right;">
+          <div style="display: flex; justify-content: space-between; font-size: 1.25rem; font-weight: 700; margin-bottom: 0.5rem;">
+            <span>Subtotal</span>
+            <span>{{ cart.total_price | money }}</span>
+          </div>
+          <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 1.5rem;">
+            Taxes and shipping calculated at checkout
+          </p>
+
+          <button type="submit" name="checkout" class="btn btn-primary btn-full" style="padding: 1rem 2rem; font-size: 1.1rem;">
+            {{ 'cart.checkout' | t }}
+          </button>
+        </div>
+      </div>
+    </form>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Shopping Cart",
+  "settings": []
+}
+{% endschema %}

@@ -1,0 +1,64 @@
+{% comment %}
+  Slide-out AJAX Cart Drawer snippet
+{% endcomment %}
+
+<div id="CartDrawer" class="cart-drawer" aria-modal="true" role="dialog" aria-label="Shopping Cart">
+  <div class="cart-drawer__overlay"></div>
+  <div class="cart-drawer__panel">
+    <div class="cart-drawer__header">
+      <h2>Your Cart</h2>
+      <button type="button" class="cart-drawer__close" data-cart-drawer-close aria-label="Close cart">&times;</button>
+    </div>
+
+    <div class="cart-drawer__body" id="CartDrawerItems">
+      {% if cart.item_count == 0 %}
+        <div class="cart-drawer__empty">
+          <p>Your cart is empty.</p>
+          <a href="{{ routes.all_products_collection_url }}" class="btn btn-primary" style="margin-top:1rem;">Continue Shopping</a>
+        </div>
+      {% else %}
+        <ul class="cart-drawer__items">
+          {% for item in cart.items %}
+            <li class="cart-drawer__item">
+              {% if item.image %}
+                <img src="{{ item.image | image_url: width: 160 }}" class="cart-drawer__item-img" alt="{{ item.title | escape }}" loading="lazy" width="80" height="80">
+              {% else %}
+                <div class="cart-drawer__item-img"></div>
+              {% endif %}
+              <div>
+                <div class="cart-drawer__item-title">{{ item.product.title }}</div>
+                {% unless item.product.has_only_default_variant %}
+                  <div class="cart-drawer__item-variant">{{ item.variant.title }}</div>
+                {% endunless %}
+                <div style="font-weight:600;">{{ item.final_line_price | money }}</div>
+                <div class="cart-drawer__item-actions">
+                  <div class="quantity-control">
+                    <button type="button" class="quantity-btn" data-cart-action="decrement" data-line-key="{{ item.key }}" data-qty="{{ item.quantity }}">-</button>
+                    <input type="text" class="quantity-input" value="{{ item.quantity }}" readonly aria-label="Quantity">
+                    <button type="button" class="quantity-btn" data-cart-action="increment" data-line-key="{{ item.key }}" data-qty="{{ item.quantity }}">+</button>
+                  </div>
+                  <button type="button" class="cart-drawer__item-remove" data-cart-action="remove" data-line-key="{{ item.key }}">Remove</button>
+                </div>
+              </div>
+            </li>
+          {% endfor %}
+        </ul>
+      {% endif %}
+    </div>
+
+    <div class="cart-drawer__footer" style="{% if cart.item_count == 0 %}display:none;{% endif %}">
+      <div class="cart-drawer__subtotal">
+        <span>Subtotal</span>
+        <span id="CartDrawerSubtotal">{{ cart.total_price | money }}</span>
+      </div>
+      <p style="font-size:0.85rem;color:#64748b;margin-bottom:1rem;">Taxes and shipping calculated at checkout</p>
+      <form action="{{ routes.cart_url }}" method="post">
+        <button type="submit" name="checkout" class="btn btn-primary btn-full">Proceed to Checkout</button>
+      </form>
+      <div style="text-align:center;margin-top:0.75rem;">
+        <a href="{{ routes.cart_url }}" style="font-size:0.9rem;text-decoration:underline;">View full cart</a>
+      </div>
+    </div>
+  </div>
+</div>
+

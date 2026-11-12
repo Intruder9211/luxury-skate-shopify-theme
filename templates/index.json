@@ -1,0 +1,72 @@
+{
+  "sections": {
+    "hero": {
+      "type": "hero-banner",
+      "settings": {
+        "video_url": "https://youtu.be/J0nbHUr8Ouk?si=ztM97hgid-waB4RD",
+        "subheading": "StreetRide High Performance Skateboarding",
+        "heading": "Where Performance Meets High Innovation",
+        "text": "Premium maple decks, precision bearings, and pro-grade skate gear built for street, park, and speed.",
+        "button_label": "Explore Collections",
+        "button_link": "/collections/all",
+        "secondary_button_label": "Our Story",
+        "secondary_button_link": "/pages/about"
+      }
+    },
+    "manifesto": {
+      "type": "brand-manifesto",
+      "settings": {
+        "pretitle": "The StreetRide Philosophy",
+        "quote": "We believe precision engineering and rider-driven design create the ultimate skate experience. Every board is crafted for durability, pop, and effortless control.",
+        "author": "Engineered with 7-Ply Canadian Maple & Precision Components"
+      }
+    },
+    "collection_grid": {
+      "type": "collection-grid",
+      "blocks": {
+        "col_1": {
+          "type": "collection",
+          "settings": {
+            "title": "Complete Skateboards"
+          }
+        },
+        "col_2": {
+          "type": "collection",
+          "settings": {
+            "title": "Cruiser Skateboards"
+          }
+        },
+        "col_3": {
+          "type": "collection",
+          "settings": {
+            "title": "Skateboard Decks"
+          }
+        }
+      },
+      "block_order": [
+        "col_1",
+        "col_2",
+        "col_3"
+      ],
+      "settings": {
+        "subtitle": "Curated Universes",
+        "title": "Explore By Category"
+      }
+    },
+    "featured": {
+      "type": "featured-collection",
+      "settings": {
+        "subtitle": "Top Rated Gear",
+        "title": "Featured Skateboard Gear",
+        "products_to_show": 8,
+        "show_view_all": true
+      }
+    }
+  },
+  "order": [
+    "hero",
+    "manifesto",
+    "collection_grid",
+    "featured"
+  ]
+}

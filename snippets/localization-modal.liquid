@@ -1,0 +1,90 @@
+{% comment %}
+  Localization Modal Popup (Country, Currency & Language Selector)
+{% endcomment %}
+
+<div id="LocalizationModal" class="localization-modal" aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="LocalizationModalTitle">
+  <div class="localization-modal__backdrop" data-localization-close></div>
+  <div class="localization-modal__dialog">
+    <div class="localization-modal__header">
+      <h3 id="LocalizationModalTitle" class="localization-modal__title">Preferences & Region</h3>
+      <button type="button" class="localization-modal__close-btn" data-localization-close aria-label="Close dialog">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+    </div>
+
+    <div class="localization-modal__body">
+      {% form 'localization', id: 'HeaderLocalizationForm', class: 'localization-form' %}
+        <!-- Country / Currency Selector -->
+        {% if localization.available_countries.size > 1 %}
+          <div class="localization-form__group">
+            <label for="HeaderCountrySelect" class="localization-form__label">
+              Country / Currency
+            </label>
+            <div class="localization-form__select-wrapper">
+              <select id="HeaderCountrySelect" name="country_code" class="localization-form__select" onchange="this.form.submit()">
+                {% for country in localization.available_countries %}
+                  <option
+                    value="{{ country.iso_code }}"
+                    {% if country.iso_code == localization.country.iso_code %}selected{% endif %}
+                  >
+                    {{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})
+                  </option>
+                {% endfor %}
+              </select>
+              <svg class="localization-form__arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </div>
+          </div>
+        {% else %}
+          <div class="localization-form__group">
+            <label class="localization-form__label">Store Market</label>
+            <div class="localization-form__static">
+              {{ localization.country.name }} ({{ localization.country.currency.iso_code }} {{ localization.country.currency.symbol }})
+            </div>
+          </div>
+        {% endif %}
+
+        <!-- Language Selector -->
+        {% if localization.available_languages.size > 1 %}
+          <div class="localization-form__group">
+            <label for="HeaderLanguageSelect" class="localization-form__label">
+              Language
+            </label>
+            <div class="localization-form__select-wrapper">
+              <select id="HeaderLanguageSelect" name="locale_code" class="localization-form__select" onchange="this.form.submit()">
+                {% for language in localization.available_languages %}
+                  <option
+                    value="{{ language.iso_code }}"
+                    {% if language.iso_code == localization.language.iso_code %}selected{% endif %}
+                  >
+                    {{ language.endonym_name | capitalize }}
+                  </option>
+                {% endfor %}
+              </select>
+              <svg class="localization-form__arrow" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </div>
+          </div>
+        {% else %}
+          <div class="localization-form__group">
+            <label class="localization-form__label">Language</label>
+            <div class="localization-form__static">
+              {{ localization.language.endonym_name | default: 'English (US)' | capitalize }}
+            </div>
+          </div>
+        {% endif %}
+
+        <div class="localization-form__footer">
+          <button type="submit" class="btn btn-primary localization-form__submit-btn">
+            Update Preferences
+          </button>
+        </div>
+      {% endform %}
+    </div>
+  </div>
+</div>
+

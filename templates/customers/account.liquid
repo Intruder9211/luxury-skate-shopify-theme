@@ -1,0 +1,166 @@
+<section class="customer-account-section">
+  <div class="customer-account-container">
+    <!-- Header banner / Welcome banner -->
+    <div class="customer-account-header">
+      <div class="customer-profile-badge-row">
+        <div class="customer-avatar">
+          <span class="customer-avatar-initials">
+            {% if customer.first_name != blank %}
+              {{ customer.first_name | slice: 0, 1 | upcase }}{{ customer.last_name | slice: 0, 1 | upcase }}
+            {% else %}
+              {{ customer.email | slice: 0, 2 | upcase }}
+            {% endif %}
+          </span>
+          <span class="customer-status-dot" title="Active Member"></span>
+        </div>
+        <div class="customer-intro">
+          <div class="customer-tag">SEED VERIFIED RIDER</div>
+          <h1 class="customer-welcome-title">
+            {{ customer.first_name | default: 'Member' }} {{ customer.last_name }}
+          </h1>
+          <p class="customer-account-email">{{ customer.email }}</p>
+        </div>
+      </div>
+
+      <div class="customer-header-actions">
+        <a href="{{ routes.account_addresses_url }}" class="btn btn-outline customer-action-btn">
+          Manage Addresses ({{ customer.addresses_count }})
+        </a>
+        <a href="{{ routes.account_logout_url }}" class="btn btn-secondary customer-action-btn">
+          Sign Out
+        </a>
+      </div>
+    </div>
+
+    <!-- Main Account Grid: Orders & Profile Overview -->
+    <div class="customer-account-grid">
+      <!-- Left Column: Order History -->
+      <div class="customer-orders-panel">
+        <div class="customer-panel-header">
+          <h2 class="customer-panel-title">Order History & Drops</h2>
+          <span class="customer-panel-count">{{ customer.orders.size }} orders placed</span>
+        </div>
+
+        {% paginate customer.orders by 10 %}
+          {% if customer.orders.size > 0 %}
+            <div class="customer-orders-table-wrapper">
+              <table class="customer-orders-table" role="table">
+                <thead>
+                  <tr>
+                    <th>Order</th>
+                    <th>Date</th>
+                    <th>Payment</th>
+                    <th>Fulfillment</th>
+                    <th>Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for order in customer.orders %}
+                    <tr>
+                      <td data-label="Order">
+                        <a href="{{ order.customer_url }}" class="customer-order-link">
+                          {{ order.name }}
+                        </a>
+                      </td>
+                      <td data-label="Date">
+                        {{ order.created_at | time_tag: format: 'date' }}
+                      </td>
+                      <td data-label="Payment">
+                        <span class="badge badge-payment-{{ order.financial_status }}">
+                          {{ order.financial_status_label }}
+                        </span>
+                      </td>
+                      <td data-label="Fulfillment">
+                        <span class="badge badge-fulfillment-{{ order.fulfillment_status }}">
+                          {{ order.fulfillment_status_label }}
+                        </span>
+                      </td>
+                      <td data-label="Total" class="customer-order-total">
+                        {{ order.total_net_amount | money_with_currency }}
+                      </td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+            {% if paginate.pages > 1 %}
+              <div class="customer-pagination">
+                {{ paginate | default_pagination }}
+              </div>
+            {% endif %}
+          {% else %}
+            <div class="customer-orders-empty">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="40" height="40">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+              </svg>
+              <h3>No Orders Placed Yet</h3>
+              <p>Explore our premium skate decks, wheels, and custom builds to kickstart your archive.</p>
+              <a href="{{ routes.all_products_collection_url }}" class="btn btn-primary customer-shop-btn">
+                Browse Complete Catalog
+              </a>
+            </div>
+          {% endif %}
+        {% endpaginate %}
+      </div>
+
+      <!-- Right Column: Account Details & Default Address -->
+      <div class="customer-details-panel">
+        <div class="customer-panel-header">
+          <h2 class="customer-panel-title">Default Shipping</h2>
+          <a href="{{ routes.account_addresses_url }}" class="customer-panel-edit-link">Edit</a>
+        </div>
+
+        <div class="customer-details-card">
+          {% if customer.default_address %}
+            <div class="customer-address-box">
+              <span class="customer-address-recipient">
+                {{ customer.default_address.name }}
+              </span>
+              {% if customer.default_address.company != blank %}
+                <p class="customer-address-company">{{ customer.default_address.company }}</p>
+              {% endif %}
+              <p class="customer-address-lines">
+                {{ customer.default_address.address1 }}<br>
+                {% if customer.default_address.address2 != blank %}
+                  {{ customer.default_address.address2 }}<br>
+                {% endif %}
+                {{ customer.default_address.city }}, {{ customer.default_address.province_code }} {{ customer.default_address.zip }}<br>
+                {{ customer.default_address.country }}
+              </p>
+              {% if customer.default_address.phone != blank %}
+                <p class="customer-address-phone">{{ customer.default_address.phone }}</p>
+              {% endif %}
+            </div>
+          {% else %}
+            <div class="customer-no-address">
+              <p>No primary address on file.</p>
+              <a href="{{ routes.account_addresses_url }}" class="btn btn-outline" style="font-size: 0.78rem;">
+                + Add Delivery Address
+              </a>
+            </div>
+          {% endif %}
+        </div>
+
+        <!-- Membership Perks Widget -->
+        <div class="customer-perks-widget">
+          <h3 class="customer-perks-widget-title">Account Privileges</h3>
+          <ul class="customer-perks-mini-list">
+            <li>
+              <span class="perk-bullet">✓</span>
+              <span><strong>VIP Access:</strong> Early access to limited edition deck drops</span>
+            </li>
+            <li>
+              <span class="perk-bullet">✓</span>
+              <span><strong>Hardware Warranty:</strong> Registered rider guarantee on trucks & decks</span>
+            </li>
+            <li>
+              <span class="perk-bullet">✓</span>
+              <span><strong>Expedited Dispatch:</strong> Priority staging on custom assemblies</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+

@@ -1,0 +1,617 @@
+<div class="product-page-section" style="background-color: #FBFBF9; padding: 2.5rem 0 6rem;">
+  <div class="container">
+    <!-- Top Sub-Navigation: Back & Breadcrumbs -->
+    <div class="product-top-bar">
+      <div class="product-top-bar__left">
+        <button type="button" class="product-back-btn" onclick="window.history.back();" aria-label="Go Back">
+          <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="14" height="14">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+          </svg>
+          <span>Back</span>
+        </button>
+      </div>
+
+      <!-- Breadcrumbs dynamically sourced from store -->
+      <nav class="product-breadcrumbs-pills" aria-label="Breadcrumbs">
+        <a href="{{ routes.root_url }}" class="breadcrumb-pill">Home</a>
+        {% if collection %}
+          <a href="{{ collection.url }}" class="breadcrumb-pill">{{ collection.title }}</a>
+        {% else %}
+          <a href="{{ routes.all_products_collection_url }}" class="breadcrumb-pill">Catalog</a>
+        {% endif %}
+        <span class="breadcrumb-pill active">{{ product.title }}</span>
+      </nav>
+    </div>
+
+    <!-- Main Product Page Grid (Media Left + Purchasing Right) -->
+    <div class="seed-pdp-layout">
+      <!-- Left: Interactive Gallery -->
+      <div class="seed-pdp-media-area">
+        <!-- Main Featured Image -->
+        <div class="seed-pdp-main-media">
+          {% assign current_variant = product.selected_or_first_available_variant %}
+          {% assign featured_media = current_variant.featured_media | default: product.featured_media %}
+          {% assign variant_sku = current_variant.sku %}
+          {% assign sku_image_asset = variant_sku | append: '.png' %}
+          {% if featured_media != blank %}
+            <img
+              id="ProductMainImage"
+              src="{{ featured_media | image_url: width: 1400 }}"
+              alt="{{ featured_media.alt | default: product.title | escape }}"
+              loading="eager"
+              width="700"
+              height="700"
+              class="seed-pdp-main-image"
+            >
+          {% elsif variant_sku != blank %}
+            <img
+              id="ProductMainImage"
+              src="{{ sku_image_asset | asset_url }}"
+              alt="{{ product.title | escape }}"
+              loading="eager"
+              width="700"
+              height="700"
+              class="seed-pdp-main-image"
+              onerror="this.style.display='none'; this.nextElementSibling.style.display='flex';"
+            >
+            <div style="display:none;aspect-ratio:1;background:#F4F3EF;align-items:center;justify-content:center;color:#8c827a;font-family:var(--font-heading-family);font-size:1.3rem;">
+              {{ product.title }}
+            </div>
+          {% else %}
+            <div style="aspect-ratio:1;background:#F4F3EF;display:flex;align-items:center;justify-content:center;color:#8c827a;font-family:var(--font-heading-family);font-size:1.3rem;">
+              {{ product.title }}
+            </div>
+          {% endif %}
+
+          <!-- Fullscreen Inspector Trigger -->
+          <div class="seed-pdp-media-floating-controls">
+            <button type="button" class="floating-media-btn" title="Inspect Fullscreen" onclick="if(document.fullscreenElement){document.exitFullscreen();}else{document.getElementById('ProductMainImage').requestFullscreen();}" aria-label="Fullscreen">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"></path>
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- Secondary Supporting Media Grid -->
+        {% if product.media.size > 1 %}
+          <div class="seed-pdp-submedia-grid">
+            {% for media in product.media offset: 1 limit: 2 %}
+              <div class="seed-pdp-submedia-item" onclick="document.getElementById('ProductMainImage').src='{{ media | image_url: width: 1400 }}';">
+                <img
+                  src="{{ media | image_url: width: 600, height: 600, crop: 'center' }}"
+                  alt="{{ media.alt | default: product.title | escape }}"
+                  loading="lazy"
+                  width="350"
+                  height="350"
+                >
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+
+      <!-- Right: Product Information & Purchasing Column -->
+      <div class="seed-pdp-info-panel">
+        {% if product.vendor != blank %}
+          <div style="font-size:0.75rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--color-gold, #B89C72);font-weight:600;margin-bottom:0.5rem;">
+            {{ product.vendor }}
+          </div>
+        {% endif %}
+
+        <h1 class="seed-pdp-title">{{ product.title }}</h1>
+
+        <!-- Product Price -->
+        <div class="seed-pdp-pricing">
+          <span class="seed-pdp-current-price" id="ProductPrice">{{ product.selected_or_first_available_variant.price | money }}</span>
+          {% if product.selected_or_first_available_variant.compare_at_price > product.selected_or_first_available_variant.price %}
+            <span class="seed-pdp-compare-price" id="ComparePrice">{{ product.selected_or_first_available_variant.compare_at_price | money }}</span>
+          {% endif %}
+        </div>
+
+        <!-- Product Description / Narrative -->
+        {% if product.description != blank %}
+          <div class="seed-pdp-narrative">
+            {{ product.description }}
+          </div>
+        {% endif %}
+
+        {% form 'product', product, id: 'ProductForm', class: 'seed-pdp-form' %}
+          {% assign current_variant = product.selected_or_first_available_variant %}
+          <input type="hidden" name="id" id="SelectedVariantId" value="{{ current_variant.id }}">
+
+          <!-- Variant Selectors -->
+          {% unless product.has_only_default_variant %}
+            <div class="seed-pdp-options">
+              {% for option in product.options_with_values %}
+                <div class="seed-option-group">
+                  <label for="Option-{{ option.position }}" class="seed-option-label">
+                    {{ option.name }}
+                  </label>
+                  <select id="Option-{{ option.position }}" class="single-option-selector seed-custom-select" data-index="option{{ option.position }}">
+                    {% for value in option.values %}
+                      <option value="{{ value | escape }}" {% if option.selected_value == value %}selected="selected"{% endif %}>
+                        {{ value }}
+                      </option>
+                    {% endfor %}
+                  </select>
+                </div>
+              {% endfor %}
+            </div>
+          {% endunless %}
+
+          <!-- Quantity Selector -->
+          <div style="margin-bottom: 1.5rem;">
+            <label style="display:block; font-size:0.78rem; letter-spacing:0.12em; text-transform:uppercase; font-weight:600; color:#333333; margin-bottom:0.5rem;" for="ProductQuantity">
+              Quantity
+            </label>
+            <div class="quantity-control" style="height:44px; width:130px;">
+              <button type="button" class="quantity-btn" style="width:40px; height:44px;" onclick="const q = document.getElementById('ProductQuantity'); q.value = Math.max(1, parseInt(q.value) - 1);">-</button>
+              <input type="number" id="ProductQuantity" name="quantity" min="1" value="1" class="quantity-input" style="height:44px; width:50px !important;">
+              <button type="button" class="quantity-btn" style="width:40px; height:44px;" onclick="const q = document.getElementById('ProductQuantity'); q.value = parseInt(q.value) + 1;">+</button>
+            </div>
+          </div>
+
+          <!-- Action Buttons: Add to Cart + Wishlist Heart -->
+          <div class="seed-pdp-cta-row">
+            <button
+              type="submit"
+              name="add"
+              id="AddToCartBtn"
+              class="btn btn-seed-primary"
+              {% unless current_variant.available %}disabled{% endunless %}
+            >
+              {% if current_variant.available %}
+                Add To Cart
+              {% else %}
+                Sold Out
+              {% endif %}
+            </button>
+
+            <!-- Wishlist Heart Button Beside Add to Cart -->
+            {% assign pdp_image_url = '' %}
+            {% if featured_media != blank %}
+              {% assign pdp_image_url = featured_media | image_url: width: 300 %}
+            {% elsif variant_sku != blank %}
+              {% assign pdp_image_url = sku_image_asset | asset_url %}
+            {% endif %}
+            <button
+              type="button"
+              class="seed-pdp-wishlist-cta"
+              data-wishlist-btn
+              data-product-id="{{ product.id }}"
+              data-product-title="{{ product.title | escape }}"
+              data-product-price="{{ current_variant.price | money }}"
+              data-product-url="{{ product.url }}"
+              data-product-image="{{ pdp_image_url }}"
+              data-variant-id="{{ current_variant.id }}"
+              aria-label="Save to Wishlist"
+            >
+              <svg class="wishlist-heart-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+              </svg>
+            </button>
+          </div>
+        {% endform %}
+
+        <!-- Store Service Touchpoints -->
+        <div class="seed-pdp-touchpoints">
+          <div class="touchpoint-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4"></path>
+            </svg>
+            <span>Complimentary Insured Delivery on All Orders</span>
+          </div>
+
+          <div class="touchpoint-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+            </svg>
+            <span>Customer Satisfaction & Return Guarantee</span>
+          </div>
+
+          <div class="touchpoint-item">
+            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+            </svg>
+            <a href="mailto:{{ shop.email | default: 'support@streetride.com' }}">Have Questions? Contact Support</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+{% style %}
+  .product-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .product-back-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.78rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #444444;
+    transition: color 0.2s ease;
+  }
+
+  .product-back-btn:hover {
+    color: #000000;
+  }
+
+  .product-breadcrumbs-pills {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .breadcrumb-pill {
+    font-size: 0.74rem;
+    letter-spacing: 0.08em;
+    color: #666666;
+    padding: 0.25rem 0.75rem;
+    border: 1px solid #E8E6E1;
+    border-radius: 999px;
+    background-color: #ffffff;
+    transition: all 0.2s ease;
+  }
+
+  .breadcrumb-pill.active {
+    color: #141414;
+    border-color: #141414;
+    font-weight: 500;
+  }
+
+  /* Main PDP Layout */
+  .seed-pdp-layout {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 4.5rem;
+    align-items: flex-start;
+  }
+
+  .seed-pdp-main-media {
+    position: relative;
+    background-color: #F4F3EF;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    border: 1px solid #E8E6E1;
+  }
+
+  .seed-pdp-main-image {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    display: block;
+  }
+
+  .seed-pdp-media-floating-controls {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .floating-media-btn {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.9);
+    border: 1px solid #E8E6E1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #141414;
+    transition: all 0.2s ease;
+  }
+
+  .floating-media-btn:hover {
+    background-color: #141414;
+    color: #ffffff;
+  }
+
+  .seed-pdp-submedia-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+    margin-top: 1.5rem;
+  }
+
+  .seed-pdp-submedia-item {
+    background-color: #F4F3EF;
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    cursor: pointer;
+    border: 1px solid #E8E6E1;
+  }
+
+  .seed-pdp-submedia-item img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    transition: transform 0.4s ease;
+  }
+
+  .seed-pdp-submedia-item:hover img {
+    transform: scale(1.04);
+  }
+
+  .seed-pdp-title {
+    font-family: var(--font-heading-family);
+    font-size: clamp(2rem, 3.2vw, 2.75rem);
+    font-weight: 300;
+    margin-bottom: 0.6rem;
+    color: #141414;
+  }
+
+  .seed-pdp-narrative {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: #4a4a4a;
+    margin-bottom: 2rem;
+  }
+
+  .seed-pdp-options {
+    margin-bottom: 1.5rem;
+  }
+
+  .seed-option-label {
+    display: block;
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-weight: 600;
+    color: #333333;
+    margin-bottom: 0.5rem;
+  }
+
+  .seed-custom-select {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid #D1CFCA !important;
+    background-color: #ffffff !important;
+    border-radius: 2px !important;
+    font-size: 0.9rem;
+    color: #141414;
+    cursor: pointer;
+  }
+
+  .seed-pdp-pricing {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .seed-pdp-current-price {
+    font-family: var(--font-heading-family);
+    font-size: 1.85rem;
+    font-weight: 400;
+    color: #141414;
+  }
+
+  .seed-pdp-compare-price {
+    font-size: 1.15rem;
+    color: #94a3b8;
+    text-decoration: line-through;
+  }
+
+  .seed-pdp-cta-row {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+    margin-bottom: 2.5rem;
+  }
+
+  .btn-seed-primary {
+    flex: 1;
+    background-color: #141414;
+    color: #ffffff !important;
+    border: 1px solid #141414;
+    padding: 1.1rem 2rem;
+    font-size: 0.82rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    font-weight: 600;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    z-index: 1;
+    transition: border-color 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+                color 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .btn-seed-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--color-gold, #B89C72);
+    z-index: -1;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .btn-seed-primary:hover::before {
+    transform: scaleX(1);
+  }
+
+  .btn-seed-primary:hover {
+    border-color: var(--color-gold, #B89C72);
+  }
+
+  .seed-pdp-wishlist-cta {
+    width: 52px;
+    height: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid #D1CFCA;
+    background-color: #ffffff;
+    cursor: pointer;
+    border-radius: 2px;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+  }
+
+  .seed-pdp-wishlist-cta:hover,
+  .seed-pdp-wishlist-cta.active {
+    border-color: #141414;
+    background-color: #F4F3EF;
+  }
+
+  .seed-pdp-touchpoints {
+    display: flex;
+    flex-direction: column;
+    gap: 0.9rem;
+    border-top: 1px solid #E8E6E1;
+    padding-top: 1.75rem;
+  }
+
+  .touchpoint-item {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+    font-size: 0.75rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #555555;
+  }
+
+  .touchpoint-item a {
+    color: inherit;
+    text-decoration: underline;
+  }
+
+  .touchpoint-item svg {
+    color: var(--color-gold, #B89C72);
+    flex-shrink: 0;
+  }
+
+  .product-card__wishlist-btn {
+    position: absolute;
+    top: 0.85rem;
+    right: 0.85rem;
+    z-index: 3;
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(4px);
+    border: 1px solid #E8E6E1;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: #141414;
+    transition: all 0.2s ease;
+  }
+
+  .product-card__wishlist-btn:hover,
+  .product-card__wishlist-btn.active,
+  .seed-pdp-wishlist-cta.active {
+    background-color: var(--color-gold, #B89C72);
+    border-color: var(--color-gold, #B89C72);
+    color: #ffffff;
+  }
+
+  .product-card__wishlist-btn.active svg,
+  .seed-pdp-wishlist-cta.active svg {
+    fill: #ffffff;
+  }
+
+  @media (max-width: 900px) {
+    .seed-pdp-layout {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+  }
+{% endstyle %}
+
+<script>
+  (function() {
+    const productVariants = {{ product.variants | json }};
+    const productImages = {{ product.images | json }};
+    const selectors = document.querySelectorAll('.single-option-selector');
+    const variantIdInput = document.getElementById('SelectedVariantId');
+    const priceDisplay = document.getElementById('ProductPrice');
+    const addToCartBtn = document.getElementById('AddToCartBtn');
+
+    if (!selectors.length || !productVariants) return;
+
+    function onOptionChange() {
+      const selectedOptions = Array.from(selectors).map(s => s.value);
+      const matchedVariant = productVariants.find(variant => {
+        return selectedOptions.every((val, index) => variant.options[index] === val);
+      });
+
+      if (matchedVariant) {
+        variantIdInput.value = matchedVariant.id;
+        priceDisplay.textContent = '$' + (matchedVariant.price / 100).toFixed(2);
+        
+        if (matchedVariant.available) {
+          addToCartBtn.disabled = false;
+          addToCartBtn.textContent = 'Add To Cart';
+        } else {
+          addToCartBtn.disabled = true;
+          addToCartBtn.textContent = 'Sold Out';
+        }
+
+        const mainImg = document.getElementById('ProductMainImage');
+        if (mainImg) {
+          if (matchedVariant.featured_image && matchedVariant.featured_image.src) {
+            mainImg.src = matchedVariant.featured_image.src;
+          } else if (matchedVariant.sku && Array.isArray(productImages)) {
+            // Find image matching variant SKU in filename or alt text
+            const skuLower = matchedVariant.sku.toLowerCase();
+            const skuImg = productImages.find(img => {
+              const srcLower = (img.src || '').toLowerCase();
+              const altLower = (img.alt || '').toLowerCase();
+              return srcLower.includes(skuLower) || altLower.includes(skuLower);
+            });
+            if (skuImg && skuImg.src) {
+              mainImg.src = skuImg.src;
+            } else if (matchedVariant.sku) {
+              mainImg.src = "{{ 'SR-001.png' | asset_url }}".replace('SR-001.png', matchedVariant.sku + '.png');
+            }
+          } else if (matchedVariant.sku) {
+            mainImg.src = "{{ 'SR-001.png' | asset_url }}".replace('SR-001.png', matchedVariant.sku + '.png');
+          }
+        }
+
+        window.history.replaceState({}, '', '?variant=' + matchedVariant.id);
+      }
+    }
+
+    selectors.forEach(selector => {
+      selector.addEventListener('change', onOptionChange);
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Product Page",
+  "settings": [],
+  "disabled_on": {
+    "groups": ["header", "footer"]
+  }
+}
+{% endschema %}

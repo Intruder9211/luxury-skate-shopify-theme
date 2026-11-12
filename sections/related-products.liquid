@@ -1,0 +1,70 @@
+{% comment %}
+  Seed-style Related Products Section
+{% endcomment %}
+<div class="related-products-section" style="padding: 5rem 0; border-top: 1px solid var(--color-border, #E8E6E1); background-color: var(--color-secondary-bg, #FBFBF9);">
+  <div class="container">
+    <div style="text-align: center; margin-bottom: 3.5rem;">
+      <span style="font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--color-gold, #B89C72); font-weight: 600; display: block; margin-bottom: 0.75rem;">
+        Complete Your Setup
+      </span>
+      <h2 style="font-family: var(--font-heading-family); font-size: 2rem; font-weight: 300;">{{ section.settings.heading | default: 'Related Products' }}</h2>
+    </div>
+
+    <div class="product-grid" id="RelatedProductsGrid">
+      {% comment %}
+        Find related products from the same collection or product type
+      {% endcomment %}
+      {% assign related_count = 0 %}
+      {% assign target_type = product.type %}
+
+      {% if collection and collection.products_count > 1 %}
+        {% for related in collection.products %}
+          {% if related.id != product.id and related_count < 4 %}
+            {% render 'product-card', card_product: related %}
+            {% assign related_count = related_count | plus: 1 %}
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+
+      {% comment %} Fallback to catalog if less than 4 found {% endcomment %}
+      {% if related_count < 4 %}
+        {% for related in collections.all.products %}
+          {% if related.id != product.id and related.type == target_type and related_count < 4 %}
+            {% render 'product-card', card_product: related %}
+            {% assign related_count = related_count | plus: 1 %}
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+
+      {% comment %} General fallback to any 4 products {% endcomment %}
+      {% if related_count < 4 %}
+        {% for related in collections.all.products limit: 6 %}
+          {% if related.id != product.id and related_count < 4 %}
+            {% render 'product-card', card_product: related %}
+            {% assign related_count = related_count | plus: 1 %}
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Related Products",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Related Products"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Related Products"
+    }
+  ]
+}
+{% endschema %}
+

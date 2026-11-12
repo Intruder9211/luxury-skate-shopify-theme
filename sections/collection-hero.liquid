@@ -1,0 +1,139 @@
+<section
+  class="collection-hero"
+  style="{% if section.settings.image != blank %}background-image: url('{{ section.settings.image | image_url: width: 2200 }}');{% elsif collection.image != blank %}background-image: url('{{ collection.image | image_url: width: 2200 }}');{% else %}background: linear-gradient(180deg, #181818 0%, #0d0d0d 100%);{% endif %}"
+>
+  <div class="collection-hero__overlay"></div>
+
+  <div class="collection-hero__inner">
+    {% if section.settings.show_subtitle %}
+      <span class="collection-hero__subheading">
+        {{ section.settings.subtitle | default: shop.name }}
+      </span>
+    {% endif %}
+
+    <h1 class="collection-hero__title">
+      {{ collection.title }}
+    </h1>
+
+    {% if collection.description != blank and section.settings.show_description %}
+      <div class="collection-hero__desc">
+        {{ collection.description }}
+      </div>
+    {% endif %}
+
+    <div class="collection-hero__meta">
+      <span>{{ collection.products_count }} {% if collection.products_count == 1 %}Product{% else %}Products{% endif %}</span>
+      &bull;
+      <span>Authentic Quality</span>
+      &bull;
+      <span>In Stock</span>
+    </div>
+  </div>
+</section>
+
+{% style %}
+  .collection-hero {
+    position: relative;
+    min-height: 58vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background-color: #121212;
+    background-size: cover;
+    background-position: center;
+    padding: 9rem var(--page-margin) 4.5rem;
+    overflow: hidden;
+  }
+
+  .collection-hero__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.68) 100%);
+  }
+
+  .collection-hero__inner {
+    position: relative;
+    z-index: 2;
+    max-width: 820px;
+    margin: 0 auto;
+  }
+
+  .collection-hero__subheading {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.28em;
+    font-weight: 600;
+    color: var(--color-gold, #B89C72);
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .collection-hero__title {
+    color: #ffffff;
+    font-family: var(--font-heading-family);
+    font-size: clamp(2.4rem, 5vw, 4.2rem);
+    font-weight: 300;
+    line-height: 1.15;
+    margin-bottom: 1.25rem;
+  }
+
+  .collection-hero__desc {
+    color: #e2e8f0;
+    font-size: 1.05rem;
+    line-height: 1.6;
+    max-width: 650px;
+    margin: 0 auto 1.75rem;
+    font-weight: 300;
+  }
+
+  .collection-hero__meta {
+    font-size: 0.78rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--color-gold, #B89C72);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.75rem;
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Collection Hero Banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Custom Background Banner"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_subtitle",
+      "label": "Show category subline",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Custom category subline",
+      "default": "Premium Collection"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show collection description",
+      "default": true
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Hero Banner"
+    }
+  ]
+}
+{% endschema %}

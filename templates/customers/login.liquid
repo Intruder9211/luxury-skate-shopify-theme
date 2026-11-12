@@ -1,0 +1,177 @@
+<section class="customer-auth-section">
+  <div class="customer-auth-container">
+    <!-- Login Form Box -->
+    <div id="CustomerLoginForm" class="customer-auth-box">
+      <div class="customer-auth-header">
+        <span class="customer-auth-badge">SEED ARCHIVE</span>
+        <h1 class="customer-auth-title">Welcome Back</h1>
+        <p class="customer-auth-subtitle">Sign in to your member account to access reserved drops, setup logs, and orders.</p>
+      </div>
+
+      {% form 'customer_login', class: 'customer-auth-form' %}
+        {{ form.errors | default_errors }}
+
+        <div class="customer-input-group">
+          <label for="CustomerEmail" class="customer-input-label">Email Address</label>
+          <input
+            type="email"
+            name="customer[email]"
+            id="CustomerEmail"
+            class="customer-input-field"
+            autocomplete="email"
+            autocorrect="off"
+            autocapitalize="off"
+            placeholder="rider@seedstreetride.com"
+            required
+          >
+        </div>
+
+        {% if form.password_needed %}
+          <div class="customer-input-group">
+            <div class="customer-label-row">
+              <label for="CustomerPassword" class="customer-input-label">Password</label>
+              <a href="#recover" id="RecoverPasswordBtn" class="customer-forgot-link">Forgot password?</a>
+            </div>
+            <input
+              type="password"
+              name="customer[password]"
+              id="CustomerPassword"
+              class="customer-input-field"
+              autocomplete="current-password"
+              placeholder="••••••••••••"
+              required
+            >
+          </div>
+        {% endif %}
+
+        <div class="customer-submit-wrapper">
+          <button type="submit" class="btn btn-primary customer-submit-btn">
+            Sign In to Account
+          </button>
+        </div>
+
+        <div class="customer-auth-switch">
+          <span>New to Seed StreetRide?</span>
+          <a href="{{ routes.account_register_url }}" class="customer-switch-link">Create an Account</a>
+        </div>
+      {% endform %}
+    </div>
+
+    <!-- Password Recovery Form Box (Initially Hidden) -->
+    <div id="CustomerRecoverForm" class="customer-auth-box" style="display: none;">
+      <div class="customer-auth-header">
+        <span class="customer-auth-badge">RESET ACCESS</span>
+        <h2 class="customer-auth-title">Reset Password</h2>
+        <p class="customer-auth-subtitle">We will send you an email link to securely reset your credentials.</p>
+      </div>
+
+      {% form 'recover_customer_password', class: 'customer-auth-form' %}
+        {{ form.errors | default_errors }}
+
+        {% if form.posted_successfully? %}
+          <div class="customer-auth-success">
+            <p>✓ Reset instructions sent! Please check your inbox.</p>
+          </div>
+        {% endif %}
+
+        <div class="customer-input-group">
+          <label for="RecoverEmail" class="customer-input-label">Registered Email</label>
+          <input
+            type="email"
+            name="email"
+            id="RecoverEmail"
+            class="customer-input-field"
+            autocomplete="email"
+            autocorrect="off"
+            autocapitalize="off"
+            placeholder="rider@seedstreetride.com"
+            required
+          >
+        </div>
+
+        <div class="customer-submit-wrapper">
+          <button type="submit" class="btn btn-primary customer-submit-btn">
+            Send Reset Instructions
+          </button>
+        </div>
+
+        <div class="customer-auth-switch">
+          <a href="#login" id="CancelRecoverBtn" class="customer-switch-link">← Return to Sign In</a>
+        </div>
+      {% endform %}
+    </div>
+
+    <!-- Side Perks / Editorial Column -->
+    <div class="customer-auth-perks">
+      <div class="customer-perks-inner">
+        <h3 class="customer-perks-heading">Member Privileges</h3>
+        <ul class="customer-perks-list">
+          <li>
+            <div class="perk-icon">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7"></path>
+              </svg>
+            </div>
+            <div>
+              <strong>Instant Order Tracking</strong>
+              <p>Track your setup dispatch status and logistics in real-time.</p>
+            </div>
+          </li>
+          <li>
+            <div class="perk-icon">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <div>
+              <strong>Priority Drop Reservations</strong>
+              <p>Get 24-hour early access before limited edition decks go live.</p>
+            </div>
+          </li>
+          <li>
+            <div class="perk-icon">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+              </svg>
+            </div>
+            <div>
+              <strong>Persistent Wishlist Sync</strong>
+              <p>Access your curated boards and custom setups across all devices.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function() {
+    var loginBox = document.getElementById('CustomerLoginForm');
+    var recoverBox = document.getElementById('CustomerRecoverForm');
+    var recoverTrigger = document.getElementById('RecoverPasswordBtn');
+    var cancelTrigger = document.getElementById('CancelRecoverBtn');
+
+    if (recoverTrigger && cancelTrigger) {
+      recoverTrigger.addEventListener('click', function(e) {
+        e.preventDefault();
+        loginBox.style.display = 'none';
+        recoverBox.style.display = 'block';
+        window.location.hash = 'recover';
+      });
+
+      cancelTrigger.addEventListener('click', function(e) {
+        e.preventDefault();
+        recoverBox.style.display = 'none';
+        loginBox.style.display = 'block';
+        window.location.hash = '';
+      });
+
+      if (window.location.hash === '#recover') {
+        loginBox.style.display = 'none';
+        recoverBox.style.display = 'block';
+      }
+    }
+  })();
+</script>
+

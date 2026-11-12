@@ -1,0 +1,160 @@
+<section
+  class="seed-hero"
+  style="{% if section.settings.image != blank and section.settings.video_url == blank %}background-image: url('{{ section.settings.image | image_url: width: 2200 }}');{% else %}background-color: #0d0d0d;{% endif %}"
+>
+  {% assign video_id = '' %}
+  {% if section.settings.video_url contains 'youtu.be/' %}
+    {% assign video_id = section.settings.video_url | split: 'youtu.be/' | last | split: '?' | first %}
+  {% elsif section.settings.video_url contains 'youtube.com/watch' %}
+    {% assign video_id = section.settings.video_url | split: 'v=' | last | split: '&' | first %}
+  {% endif %}
+
+  {% if video_id != blank %}
+    <div class="seed-hero__video-wrapper">
+      <iframe
+        class="seed-hero__video-iframe"
+        src="https://www.youtube.com/embed/{{ video_id }}?autoplay=1&mute=1&loop=1&playlist={{ video_id }}&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1&enablejsapi=1"
+        title="Hero Background Video"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen
+        loading="eager"
+      ></iframe>
+    </div>
+  {% endif %}
+
+  <div class="seed-hero__overlay"></div>
+
+  <div class="seed-hero__inner">
+    {% if section.settings.subheading != blank %}
+      <div class="seed-hero__subheading">
+        {{ section.settings.subheading }}
+      </div>
+    {% endif %}
+
+    <h1 class="seed-hero__title">
+      {{ section.settings.heading | default: 'Where Performance Meets High Innovation' }}
+    </h1>
+
+    {% if section.settings.text != blank %}
+      <p class="seed-hero__desc">
+        {{ section.settings.text }}
+      </p>
+    {% endif %}
+
+    <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+      {% if section.settings.button_label != blank and section.settings.button_link != blank %}
+        <a href="{{ section.settings.button_link }}" class="btn btn-gold">
+          {{ section.settings.button_label }}
+        </a>
+      {% endif %}
+
+      {% if section.settings.secondary_button_label != blank and section.settings.secondary_button_link != blank %}
+        <a href="{{ section.settings.secondary_button_link }}" class="btn" style="border: 1px solid rgba(255,255,255,0.4); color: #ffffff;">
+          {{ section.settings.secondary_button_label }}
+        </a>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% style %}
+  .seed-hero__video-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .seed-hero__video-iframe {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100vw;
+    height: 56.25vw; /* 16:9 aspect ratio */
+    min-height: 100vh;
+    min-width: 177.77vh; /* 16:9 aspect ratio */
+    transform: translate(-50%, -50%);
+    border: 0;
+    pointer-events: none;
+    opacity: 0.85;
+  }
+
+  .seed-hero__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.72) 100%);
+    z-index: 1;
+  }
+{% endstyle %}
+
+{% schema %}
+{
+  "name": "Seed Hero Banner",
+  "settings": [
+    {
+      "type": "text",
+      "id": "video_url",
+      "label": "YouTube Video URL (Looping Background)",
+      "default": "https://youtu.be/J0nbHUr8Ouk?si=ztM97hgid-waB4RD"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Hero Background Image (Fallback)"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "StreetRide High Performance Skateboarding"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Where Performance Meets High Innovation"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Description",
+      "default": "Premium maple decks, precision bearings, and pro-grade skate gear built for street, park, and speed."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Primary Button Label",
+      "default": "Explore Collections"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Primary Button Link"
+    },
+    {
+      "type": "text",
+      "id": "secondary_button_label",
+      "label": "Secondary Button Label",
+      "default": "Our Story"
+    },
+    {
+      "type": "url",
+      "id": "secondary_button_link",
+      "label": "Secondary Button Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Seed Hero Banner"
+    }
+  ]
+}
+{% endschema %}

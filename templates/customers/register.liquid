@@ -1,0 +1,129 @@
+<section class="customer-auth-section">
+  <div class="customer-auth-container">
+    <!-- Register Form Box -->
+    <div class="customer-auth-box">
+      <div class="customer-auth-header">
+        <span class="customer-auth-badge">BECOME A MEMBER</span>
+        <h1 class="customer-auth-title">Create Account</h1>
+        <p class="customer-auth-subtitle">Join the Seed StreetRide community for bespoke drops, warranty registration, and expedited orders.</p>
+      </div>
+
+      {% form 'create_customer', class: 'customer-auth-form' %}
+        {{ form.errors | default_errors }}
+
+        <div class="customer-form-row">
+          <div class="customer-input-group">
+            <label for="FirstName" class="customer-input-label">First Name</label>
+            <input
+              type="text"
+              name="customer[first_name]"
+              id="FirstName"
+              class="customer-input-field"
+              {% if form.first_name %}value="{{ form.first_name }}"{% endif %}
+              autocomplete="given-name"
+              placeholder="Alex"
+              required
+            >
+          </div>
+
+          <div class="customer-input-group">
+            <label for="LastName" class="customer-input-label">Last Name</label>
+            <input
+              type="text"
+              name="customer[last_name]"
+              id="LastName"
+              class="customer-input-field"
+              {% if form.last_name %}value="{{ form.last_name }}"{% endif %}
+              autocomplete="family-name"
+              placeholder="Vance"
+              required
+            >
+          </div>
+        </div>
+
+        <div class="customer-input-group">
+          <label for="CustomerEmail" class="customer-input-label">Email Address</label>
+          <input
+            type="email"
+            name="customer[email]"
+            id="CustomerEmail"
+            class="customer-input-field"
+            {% if form.email %}value="{{ form.email }}"{% endif %}
+            autocomplete="email"
+            autocorrect="off"
+            autocapitalize="off"
+            placeholder="rider@seedstreetride.com"
+            required
+          >
+        </div>
+
+        <div class="customer-input-group">
+          <label for="CreatePassword" class="customer-input-label">Password</label>
+          <input
+            type="password"
+            name="customer[password]"
+            id="CreatePassword"
+            class="customer-input-field"
+            autocomplete="new-password"
+            placeholder="Minimum 6 characters"
+            required
+          >
+        </div>
+
+        <div class="customer-submit-wrapper">
+          <button type="submit" class="btn btn-primary customer-submit-btn">
+            Create Account
+          </button>
+        </div>
+
+        <div class="customer-auth-switch">
+          <span>Already registered?</span>
+          <a href="{{ routes.account_login_url }}" class="customer-switch-link">Sign In</a>
+        </div>
+      {% endform %}
+    </div>
+
+    <!-- Side Editorial Column -->
+    <div class="customer-auth-perks">
+      <div class="customer-perks-inner">
+        <h3 class="customer-perks-heading">Why Register?</h3>
+        <ul class="customer-perks-list">
+          <li>
+            <div class="perk-icon">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+              </svg>
+            </div>
+            <div>
+              <strong>Lifetime Deck Warranty</strong>
+              <p>Register your board serial number directly into your account archive.</p>
+            </div>
+          </li>
+          <li>
+            <div class="perk-icon">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"></path>
+              </svg>
+            </div>
+            <div>
+              <strong>VIP Custom Builds</strong>
+              <p>Save custom grip tape laser engravings and tailored truck dimensions.</p>
+            </div>
+          </li>
+          <li>
+            <div class="perk-icon">
+              <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="20" height="20">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+              </svg>
+            </div>
+            <div>
+              <strong>Express Checkout</strong>
+              <p>Pre-fill your shipping and billing details for rapid releases.</p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+

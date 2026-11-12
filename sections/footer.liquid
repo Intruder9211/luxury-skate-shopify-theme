@@ -1,0 +1,137 @@
+<footer class="site-footer" role="contentinfo">
+  <div class="container">
+    <div class="footer-grid">
+      <!-- 1. Brand Identity & Manifesto -->
+      <div class="footer-col">
+        <h3 style="letter-spacing: 0.25em;">{{ shop.name | upcase }}</h3>
+        <p style="font-size: 0.88rem; line-height: 1.7; max-width: 320px; color: #a3a3a3; margin-bottom: 1.5rem;">
+          {{ section.settings.text | default: 'Performance skateboarding decks, complete setups, and precision hardware built for street and park skaters worldwide.' }}
+        </p>
+        <div style="font-size: 0.8rem; color: var(--color-gold); letter-spacing: 0.05em;">
+          7-Ply Hard Rock Maple &bull; 100% Guaranteed Quality
+        </div>
+      </div>
+
+      <!-- 2. Collections -->
+      <div class="footer-col">
+        <h3>{{ section.settings.menu_title | default: 'Categories' }}</h3>
+        <ul class="footer-links">
+          {% if section.settings.menu.links.size > 0 %}
+            {% for link in section.settings.menu.links %}
+              <li>
+                <a href="{{ link.url }}">{{ link.title }}</a>
+              </li>
+            {% endfor %}
+          {% else %}
+            <li><a href="{{ routes.all_products_collection_url }}?filter.p.product_type=Complete+Skateboard">Complete Skateboards</a></li>
+            <li><a href="{{ routes.all_products_collection_url }}?filter.p.product_type=Cruiser+Skateboard">Cruiser Skateboards</a></li>
+            <li><a href="{{ routes.all_products_collection_url }}?filter.p.product_type=Skateboard+Deck">Skateboard Decks</a></li>
+            <li><a href="{{ routes.all_products_collection_url }}?filter.p.product_type=Skateboard+Wheels">Wheels</a></li>
+            <li><a href="{{ routes.all_products_collection_url }}?filter.p.product_type=Skateboard+Trucks">Trucks</a></li>
+          {% endif %}
+        </ul>
+      </div>
+
+      <!-- 3. Client Services & Concierge -->
+      <div class="footer-col">
+        <h3>{{ section.settings.secondary_menu_title | default: 'Rider Support' }}</h3>
+        <ul class="footer-links">
+          {% if section.settings.secondary_menu.links.size > 0 %}
+            {% for link in section.settings.secondary_menu.links %}
+              <li>
+                <a href="{{ link.url }}">{{ link.title }}</a>
+              </li>
+            {% endfor %}
+          {% else %}
+            <li><a href="{{ routes.all_products_collection_url }}">All 64 Products</a></li>
+            <li><a href="{{ routes.search_url }}">Search Catalog</a></li>
+            <li><a href="mailto:{{ shop.email | default: 'support@streetride.com' }}">Contact Support</a></li>
+            <li><a href="{{ routes.root_url }}">Shipping & Delivery</a></li>
+          {% endif %}
+        </ul>
+      </div>
+
+      <!-- 4. Private Newsletter / Concierge -->
+      <div class="footer-col">
+        <h3>Join The Club</h3>
+        <p style="font-size: 0.85rem; color: #a3a3a3; margin-bottom: 1rem;">
+          Subscribe for early drop notifications, team releases, and exclusive skate community events.
+        </p>
+
+        {% form 'customer', class: 'footer-newsletter' %}
+          <input type="hidden" name="contact[tags]" value="newsletter">
+          <div style="display: flex; gap: 0.5rem;">
+            <input
+              type="email"
+              name="contact[email]"
+              placeholder="Enter your email"
+              style="background: #1c1c1c; border: 1px solid #333333; color: #ffffff; padding: 0.65rem 0.9rem; font-size: 0.85rem;"
+              required
+            >
+            <button type="submit" class="btn btn-gold" style="padding: 0.65rem 1.2rem; font-size: 0.75rem; flex-shrink: 0;">
+              Join
+            </button>
+          </div>
+        {% endform %}
+      </div>
+    </div>
+
+    <!-- Bottom line with legal, location & payment badges -->
+    <div class="footer-bottom">
+      <div>
+        &copy; {{ 'now' | date: '%Y' }} {{ shop.name | default: 'StreetRide' }} &bull; High Performance Skateboard Gear &bull; Worldwide Delivery
+      </div>
+
+      <div class="footer__payment">
+        {% if section.settings.show_payment_icons %}
+          {% for type in shop.enabled_payment_types %}
+            {{ type | payment_type_svg_tag: class: 'payment-icon' }}
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</footer>
+
+{% schema %}
+{
+  "name": "Footer",
+  "settings": [
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Brand Manifesto Summary",
+      "default": "Conscious high jewelry crafted exclusively with certified lab-grown diamonds and 100% recycled precious metals."
+    },
+    {
+      "type": "text",
+      "id": "menu_title",
+      "label": "First menu title",
+      "default": "Collections"
+    },
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "First menu",
+      "default": "footer"
+    },
+    {
+      "type": "text",
+      "id": "secondary_menu_title",
+      "label": "Second menu title",
+      "default": "Boutique Services"
+    },
+    {
+      "type": "link_list",
+      "id": "secondary_menu",
+      "label": "Second menu"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_payment_icons",
+      "label": "Show secure payment tags",
+      "default": true
+    }
+  ]
+}
+{% endschema %}

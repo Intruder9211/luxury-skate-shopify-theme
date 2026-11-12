@@ -1,0 +1,102 @@
+<div class="container" style="padding-top: 5rem; padding-bottom: 5rem;">
+  <div style="text-align: center; max-width: 600px; margin: 0 auto 3.5rem;">
+    <span style="font-size: 0.75rem; letter-spacing: 0.25em; text-transform: uppercase; color: var(--color-gold); font-weight: 600; display: block; margin-bottom: 0.75rem;">
+      {{ section.settings.subtitle | default: 'Curation' }}
+    </span>
+    <h2>{{ section.settings.title | default: 'Signature Collections' }}</h2>
+  </div>
+
+  <div class="seed-collections-grid">
+    {% for block in section.blocks %}
+      {% assign col = block.settings.collection %}
+      {% assign target_url = col.url | default: routes.all_products_collection_url %}
+      <a href="{{ target_url }}" class="seed-collection-card" {{ block.shopify_attributes }}>
+        <div class="seed-collection-card__image">
+          {% assign image = block.settings.image | default: col.featured_image %}
+          {% if image != blank %}
+            <img
+              src="{{ image | image_url: width: 800 }}"
+              alt="{{ block.settings.title | default: col.title | escape }}"
+              loading="lazy"
+              width="600"
+              height="780"
+            >
+          {% else %}
+            {% assign default_cover = 'SR-001.png' | asset_url %}
+            <img
+              src="{{ default_cover }}"
+              alt="{{ block.settings.title | default: 'Collection' | escape }}"
+              loading="lazy"
+              width="600"
+              height="780"
+              style="object-fit:cover;width:100%;height:100%;"
+            >
+          {% endif %}
+        </div>
+
+        <div class="seed-collection-card__info">
+          <h3 class="seed-collection-card__title">
+            {{ block.settings.title | default: col.title | default: 'Collection' }}
+          </h3>
+          <span class="seed-collection-card__cta">
+            Discover Series &rarr;
+          </span>
+        </div>
+      </a>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Collection Grid",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subtitle",
+      "label": "Section Subtitle",
+      "default": "Curated Universes"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Section Heading",
+      "default": "Explore By Collection"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection Tile",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Custom Feature Image (optional)"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Custom Title Override"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Collection Grid",
+      "blocks": [
+        { "type": "collection", "settings": { "title": "Kohana Collection" } },
+        { "type": "collection", "settings": { "title": "Be Free Series" } },
+        { "type": "collection", "settings": { "title": "Always Be Classics" } }
+      ]
+    }
+  ]
+}
+{% endschema %}
+

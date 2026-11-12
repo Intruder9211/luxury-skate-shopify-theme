@@ -1,0 +1,616 @@
+<div class="container" style="padding-top: 3.5rem; padding-bottom: 5rem;">
+  <!-- Collection Toolbar: Count & Sorting -->
+  <div class="collection-toolbar">
+    <div class="collection-toolbar__count">
+      Showing {{ collection.products_count }} {% if collection.products_count == 1 %}Product{% else %}Products{% endif %}
+    </div>
+
+    <!-- Mobile Filter Open Trigger -->
+    <button type="button" class="btn btn-outline collection-mobile-filter-btn" onclick="document.querySelector('.collection-sidebar').classList.toggle('is-mobile-open');">
+      <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z"></path>
+      </svg>
+      <span>Filter & Refine</span>
+    </button>
+
+    <div class="collection-toolbar__sort">
+      <label for="SortBy" style="font-size: 0.82rem; text-transform: uppercase; letter-spacing: 0.1em; color: #555555;">Sort by:</label>
+      <select id="SortBy" class="collection-sort-select" onchange="location.href = window.location.pathname + '?sort_by=' + this.value">
+        {% assign sort_by = collection.sort_by | default: collection.default_sort_by %}
+        {% for option in collection.sort_options %}
+          <option value="{{ option.value }}" {% if option.value == sort_by %}selected="selected"{% endif %}>
+            {{ option.name }}
+          </option>
+        {% endfor %}
+      </select>
+    </div>
+  </div>
+
+  <!-- 30% Sticky Filters Container + 70% Product Grid -->
+  <div class="collection-layout-wrapper">
+    <!-- Left Sticky Sidebar (30% width) with your exact 11 CSV Categories -->
+    <aside class="collection-sidebar" role="complementary" aria-label="Product Filters">
+      <div class="collection-sidebar__inner">
+        <div class="collection-sidebar__header">
+          <h3 class="collection-sidebar__title">Filter & Refine</h3>
+          <a href="{{ collection.url }}" class="collection-sidebar__clear-all">Clear All</a>
+          <button type="button" class="collection-sidebar__mobile-close" onclick="document.querySelector('.collection-sidebar').classList.remove('is-mobile-open');">&times;</button>
+        </div>
+
+        <!-- 1. Categories Filter Group (Matching the 11 Screenshot Categories) -->
+        <div class="filter-group">
+          <button type="button" class="filter-group__header" onclick="this.parentElement.classList.toggle('is-collapsed');">
+            <span>Categories</span>
+            <span class="filter-group__chevron">&minus;</span>
+          </button>
+          <div class="filter-group__content">
+            <ul class="filter-list" id="CategoryFilterList">
+              <li class="filter-item">
+                <a href="{{ routes.all_products_collection_url }}" class="filter-category-link" data-cat-type="all">
+                  <span>All Products</span>
+                  <span class="filter-value-count">(64)</span>
+                </a>
+              </li>
+              <li class="filter-item">
+                <a href="{{ routes.all_products_collection_url }}?filter.p.product_type=Complete+Skateboard" class="filter-category-link" data-cat-type="complete-skateboard" data-filter-types="Complete Skateboard">
+                  <span>Complete Skateboards</span>
+                  <span class="filter-value-count">(8)</span>
+                </a>
+              </li>
+              <li class="filter-item">
+                <a href="{{ routes.all_products_collection_url }}?filter.p.product_type=Cruiser+Skateboard" class="filter-category-link" data-cat-type="cruiser-skateboard" data-filter-types="Cruiser Skateboard">
+                  <span>Cruiser Skateboards</span>
+                  <span class="filter-value-count">(6)</span>
+                </a>
+              </li>
+              <li class="filter-item">
+                <a href="{{ routes.all_products_collection_url }}?filter.p.product_type=Skateboard+Deck" class="filter-category-link" data-cat-type="skateboard-deck" data-filter-types="Skateboard Deck">
+                  <span>Skateboard Decks</span>
+                  <span class="filter-value-count">(8)</span>
+                </a>
+              </li>
+              <li class="filter-item">
+                <a href="{{ routes.all_products_collection_url }}?filter.p.product_type=Skateboard+Wheels" class="filter-category-link" data-cat-type="skateboard-wheels" data-filter-types="Skateboard Wheels">
+                  <span>Wheels</span>
+                  <span class="filter-value-count">(5)</span>
+                </a>
+              </li>
+              <li class="filter-item">
+                <a href="{{ routes.all_products_collection_url }}?filter.p.product_type=Skateboard+Bearings" class="filter-category-link" data-cat-type="skateboard-bearings" data-filter-types="Skateboard Bearings">
+                  <span>Bearings</span>
+                  <span class="filter-value-count">(4)</span>
+                </a>
+              </li>
+              <li class="filter-item">
+                <a href="{{ routes.all_products_collection_url }}?filter.p.product_type=Skateboard+Trucks" class="filter-category-link" data-cat-type="skateboard-trucks" data-filter-types="Skateboard Trucks">
+                  <span>Trucks</span>
+                  <span class="filter-value-count">(4)</span>
+                </a>
+              </li>
+              <li class="filter-item">
+                <a href="{{ routes.all_products_collection_url }}?filter.p.product_type=Grip+Tape&filter.p.product_type=Skateboard+Hardware" class="filter-category-link" data-cat-type="grip-hardware" data-filter-types="Grip Tape,Skateboard Hardware">
+                  <span>Grip Tape & Hardware</span>
+                  <span class="filter-value-count">(7)</span>
+                </a>
+              </li>
+              <li class="filter-item">
+                <a href="{{ routes.all_products_collection_url }}?filter.p.product_type=Skateboard+Tools&filter.p.product_type=Skateboard+Accessories" class="filter-category-link" data-cat-type="tools-accessories" data-filter-types="Skateboard Tools,Skateboard Accessories">
+                  <span>Tools & Accessories</span>
+                  <span class="filter-value-count">(5)</span>
+                </a>
+              </li>
+              <li class="filter-item">
+                <a href="{{ routes.all_products_collection_url }}?filter.p.product_type=Protective+Gear" class="filter-category-link" data-cat-type="protective-gear" data-filter-types="Protective Gear">
+                  <span>Protective Gear</span>
+                  <span class="filter-value-count">(6)</span>
+                </a>
+              </li>
+              <li class="filter-item">
+                <a href="{{ routes.all_products_collection_url }}?filter.p.product_type=Skate+Apparel" class="filter-category-link" data-cat-type="skate-apparel" data-filter-types="Skate Apparel">
+                  <span>Apparel</span>
+                  <span class="filter-value-count">(4)</span>
+                </a>
+              </li>
+              <li class="filter-item">
+                <a href="{{ routes.all_products_collection_url }}?filter.p.product_type=Skateboard+Maintenance&filter.p.product_type=Skateboard+Storage&filter.p.product_type=Skateboard+Parts&filter.p.product_type=Skateboard+Bags" class="filter-category-link" data-cat-type="maintenance-storage" data-filter-types="Skateboard Maintenance,Skateboard Storage,Skateboard Parts,Skateboard Bags">
+                  <span>Maintenance & Storage</span>
+                  <span class="filter-value-count">(7)</span>
+                </a>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- 2. Dynamic Shopify Online Store 2.0 Facets (Price, Width, Availability) -->
+        <form id="CollectionFiltersForm" class="collection-filters-form">
+          {% if collection.filters.size > 0 %}
+            {% for filter in collection.filters %}
+              <div class="filter-group">
+                <button type="button" class="filter-group__header" onclick="this.parentElement.classList.toggle('is-collapsed');">
+                  <span>{{ filter.label }}</span>
+                  <span class="filter-group__chevron">&minus;</span>
+                </button>
+
+                <div class="filter-group__content">
+                  {% case filter.type %}
+                    {% when 'list' %}
+                      <ul class="filter-list">
+                        {% for value in filter.values %}
+                          <li class="filter-item">
+                            <label class="filter-checkbox-label">
+                              <input
+                                type="checkbox"
+                                name="{{ value.param_name }}"
+                                value="{{ value.value }}"
+                                {% if value.active %}checked{% endif %}
+                                {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                                onchange="this.closest('form').submit();"
+                              >
+                              <span class="filter-checkbox-custom"></span>
+                              <span class="filter-value-text">{{ value.label }}</span>
+                              <span class="filter-value-count">({{ value.count }})</span>
+                            </label>
+                          </li>
+                        {% endfor %}
+                      </ul>
+
+                    {% when 'price_range' %}
+                      <div class="price-range-filter">
+                        <div style="display:flex; gap:0.5rem; align-items:center;">
+                          <input
+                            type="number"
+                            name="{{ filter.min_value.param_name }}"
+                            placeholder="Min"
+                            value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"
+                            style="padding:0.4rem 0.6rem; font-size:0.85rem;"
+                          >
+                          <span>-</span>
+                          <input
+                            type="number"
+                            name="{{ filter.max_value.param_name }}"
+                            placeholder="Max"
+                            value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"
+                            style="padding:0.4rem 0.6rem; font-size:0.85rem;"
+                          >
+                        </div>
+                        <button type="submit" class="btn btn-outline" style="margin-top:0.75rem; padding:0.45rem 1rem; font-size:0.75rem; width:100%;">
+                          Apply Price
+                        </button>
+                      </div>
+                  {% endcase %}
+                </div>
+              </div>
+            {% endfor %}
+          {% endif %}
+        </form>
+      </div>
+    </aside>
+
+    <!-- Right Products Grid Container (70% width) -->
+    <main class="collection-main-content" role="main">
+      {% paginate collection.products by section.settings.products_per_page %}
+        {% if collection.products.size == 0 %}
+          <div style="text-align: center; padding: 5rem 1rem; background-color: #F7F5F0; border-radius: var(--border-radius);">
+            <p style="font-size: 1.15rem; color: #555555; margin-bottom: 1rem;">No products match your selected filters.</p>
+            <a href="{{ collection.url }}" class="btn btn-outline">Clear Filters</a>
+          </div>
+        {% else %}
+          <div class="collection-products-grid">
+            {% for product in collection.products %}
+              {% render 'product-card', card_product: product %}
+            {% endfor %}
+          </div>
+
+          <!-- Pagination -->
+          {% if paginate.pages > 1 %}
+            <div style="display: flex; justify-content: center; margin-top: 4rem;">
+              {{ paginate | default_pagination }}
+            </div>
+          {% endif %}
+        {% endif %}
+      {% endpaginate %}
+    </main>
+  </div>
+</div>
+
+{% style %}
+  .collection-toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 1.25rem;
+    margin-bottom: 2.5rem;
+    border-bottom: 1px solid var(--color-border, #E8E6E1);
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .collection-toolbar__count {
+    font-size: 0.85rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #666666;
+  }
+
+  .collection-mobile-filter-btn {
+    display: none;
+    padding: 0.5rem 1rem;
+    font-size: 0.75rem;
+  }
+
+  .collection-toolbar__sort {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .collection-sort-select {
+    width: auto !important;
+    padding: 0.45rem 2rem 0.45rem 0.9rem !important;
+    font-size: 0.85rem !important;
+    border: 1px solid var(--color-border, #E8E6E1) !important;
+    border-radius: var(--border-radius, 2px) !important;
+    background-color: transparent !important;
+    cursor: pointer;
+  }
+
+  .collection-layout-wrapper {
+    display: flex;
+    align-items: flex-start;
+    gap: 3.5rem;
+  }
+
+  .collection-sidebar {
+    flex: 0 0 28%;
+    max-width: 28%;
+    position: sticky;
+    top: 7rem;
+    max-height: calc(100vh - 8rem);
+    overflow-y: auto;
+    padding-right: 1.5rem;
+    scrollbar-width: thin;
+    scrollbar-color: #d1d5db transparent;
+  }
+
+  .collection-sidebar::-webkit-scrollbar {
+    width: 4px;
+  }
+  .collection-sidebar::-webkit-scrollbar-thumb {
+    background-color: #d1d5db;
+    border-radius: 4px;
+  }
+
+  .collection-sidebar__inner {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .collection-sidebar__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--color-border, #E8E6E1);
+  }
+
+  .collection-sidebar__title {
+    font-family: var(--font-primary--family);
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    font-weight: 600;
+    color: #141414;
+    margin: 0;
+  }
+
+  .collection-sidebar__clear-all {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-gold, #B89C72);
+    text-decoration: underline;
+  }
+
+  .collection-sidebar__mobile-close {
+    display: none;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+
+  .filter-group {
+    border-bottom: 1px solid var(--color-border, #E8E6E1);
+    padding-bottom: 1.25rem;
+  }
+
+  .filter-group__header {
+    width: 100%;
+    background: none;
+    border: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: var(--font-heading-family);
+    font-size: 1.15rem;
+    color: #141414;
+    cursor: pointer;
+    padding: 0.25rem 0 0.85rem;
+    text-align: left;
+  }
+
+  .filter-group.is-collapsed .filter-group__content {
+    display: none;
+  }
+
+  .filter-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
+  }
+
+  .filter-category-link {
+    font-size: 0.88rem;
+    color: #4a4a4a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.35rem 0.6rem;
+    border-radius: 4px;
+    transition: all 0.2s ease;
+  }
+
+  .filter-category-link:hover {
+    color: #000000;
+    background-color: #f4f3ef;
+  }
+
+  .filter-category-link.is-active {
+    color: #141414;
+    font-weight: 600;
+    background-color: #e8e6e1;
+  }
+
+  .filter-category-link.is-active .filter-value-count {
+    color: #141414;
+    font-weight: 600;
+  }
+
+  .filter-checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.88rem;
+    color: #444444;
+    cursor: pointer;
+  }
+
+  .filter-checkbox-label input {
+    display: none;
+  }
+
+  .filter-checkbox-custom {
+    width: 16px;
+    height: 16px;
+    border: 1px solid #c4c4c4;
+    border-radius: 2px;
+    display: inline-block;
+    position: relative;
+    transition: all 0.2s ease;
+  }
+
+  .filter-checkbox-label input:checked + .filter-checkbox-custom {
+    background-color: #141414;
+    border-color: #141414;
+  }
+
+  .filter-checkbox-label input:checked + .filter-checkbox-custom::after {
+    content: '';
+    position: absolute;
+    top: 2px;
+    left: 5px;
+    width: 4px;
+    height: 8px;
+    border: solid #ffffff;
+    border-width: 0 1.5px 1.5px 0;
+    transform: rotate(45deg);
+  }
+
+  .filter-value-count {
+    font-size: 0.75rem;
+    color: #888888;
+    margin-left: auto;
+  }
+
+  .collection-main-content {
+    flex: 1 1 72%;
+    width: 72%;
+  }
+
+  .collection-products-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  @media (max-width: 1024px) {
+    .collection-products-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
+    }
+    .collection-sidebar {
+      flex: 0 0 32%;
+      max-width: 32%;
+    }
+    .collection-main-content {
+      flex: 1 1 68%;
+      width: 68%;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .collection-mobile-filter-btn {
+      display: inline-flex;
+    }
+    .collection-toolbar {
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .collection-products-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1rem;
+    }
+    .collection-layout-wrapper {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+    .collection-main-content {
+      width: 100%;
+    }
+    .collection-sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 85%;
+      max-width: 340px;
+      height: 100%;
+      max-height: 100vh;
+      background-color: #ffffff;
+      z-index: 1000;
+      padding: 2rem 1.5rem;
+      transform: translateX(-100%);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      box-shadow: 10px 0 40px rgba(0,0,0,0.2);
+    }
+    .collection-sidebar.is-mobile-open {
+      transform: translateX(0);
+    }
+    .collection-sidebar__mobile-close {
+      display: block;
+    }
+  }
+
+  @media (max-width: 480px) {
+    .collection-products-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+    }
+    .collection-toolbar {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+    .collection-toolbar__sort {
+      width: 100%;
+      justify-content: space-between;
+    }
+    .collection-sort-select {
+      flex: 1;
+    }
+  }
+{% endstyle %}
+
+<script>
+  (function() {
+    // 1. Highlight active category link based on current URL params
+    const currentParams = new URLSearchParams(window.location.search);
+    const productTypes = currentParams.getAll('filter.p.product_type');
+    const categoryLinks = document.querySelectorAll('#CategoryFilterList .filter-category-link');
+    const countDisplay = document.querySelector('.collection-toolbar__count');
+    const productCards = document.querySelectorAll('.collection-products-grid .product-card');
+
+    function applyFilter(allowedTypesList, targetLink) {
+      categoryLinks.forEach(l => l.classList.remove('is-active'));
+      if (targetLink) targetLink.classList.add('is-active');
+
+      let visibleCount = 0;
+      productCards.forEach(card => {
+        if (!allowedTypesList || allowedTypesList.length === 0) {
+          card.style.display = '';
+          visibleCount++;
+        } else {
+          const cardType = (card.getAttribute('data-product-type') || '').trim();
+          const isMatch = allowedTypesList.some(type => type.toLowerCase() === cardType.toLowerCase());
+          if (isMatch) {
+            card.style.display = '';
+            visibleCount++;
+          } else {
+            card.style.display = 'none';
+          }
+        }
+      });
+
+      if (countDisplay) {
+        countDisplay.textContent = 'Showing ' + visibleCount + ' ' + (visibleCount === 1 ? 'Product' : 'Products');
+      }
+
+      // Hide or show empty state if 0 items visible
+      let emptyMsg = document.getElementById('JsCategoryEmptyState');
+      if (visibleCount === 0) {
+        if (!emptyMsg) {
+          emptyMsg = document.createElement('div');
+          emptyMsg.id = 'JsCategoryEmptyState';
+          emptyMsg.style.cssText = 'grid-column: 1 / -1; text-align: center; padding: 4rem 1rem; background-color: #F7F5F0; border-radius: 2px;';
+          emptyMsg.innerHTML = '<p style="font-size: 1.15rem; color: #555555; margin-bottom: 1rem;">No products match your selected category.</p><a href="{{ routes.all_products_collection_url }}" class="btn btn-outline">View All Products</a>';
+          const grid = document.querySelector('.collection-products-grid');
+          if (grid) grid.appendChild(emptyMsg);
+        }
+        emptyMsg.style.display = 'block';
+      } else if (emptyMsg) {
+        emptyMsg.style.display = 'none';
+      }
+    }
+
+    // Attach instant client-side filtering on category clicks + URL update
+    categoryLinks.forEach(link => {
+      link.addEventListener('click', function(e) {
+        e.preventDefault();
+        const typesStr = this.getAttribute('data-filter-types');
+        const allowedTypes = typesStr ? typesStr.split(',').map(s => s.trim()) : null;
+        applyFilter(allowedTypes, this);
+
+        const newHref = this.getAttribute('href');
+        if (newHref) {
+          window.history.pushState({}, '', newHref);
+        }
+      });
+    });
+
+    // On initial page load: check URL parameters and filter immediately
+    if (productTypes.length > 0) {
+      let matchedLink = null;
+      categoryLinks.forEach(link => {
+        const typesStr = link.getAttribute('data-filter-types');
+        if (typesStr) {
+          const linkTypes = typesStr.split(',').map(s => s.trim().toLowerCase());
+          if (productTypes.some(pt => linkTypes.includes(pt.trim().toLowerCase()))) {
+            matchedLink = link;
+          }
+        }
+      });
+      applyFilter(productTypes, matchedLink);
+    } else {
+      const allLink = document.querySelector('#CategoryFilterList [data-cat-type="all"]');
+      if (allLink) allLink.classList.add('is-active');
+    }
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Collection Products",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 12,
+      "max": 64,
+      "step": 4,
+      "default": 64,
+      "label": "Products per page"
+    }
+  ]
+}
+{% endschema %}

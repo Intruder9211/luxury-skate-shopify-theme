@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 80" fill="none">
+  <!-- Stylized geometric origami seed bird -->
+  <path d="M72 18 C78 26, 92 34, 108 34 C98 42, 85 45, 74 42 C64 40, 56 32, 58 24 Z" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M74 18 C68 28, 62 38, 52 46 C60 48, 70 48, 78 44" stroke="#ffffff" stroke-width="1.8" stroke-linecap="round"/>
+  <path d="M88 16 C95 12, 104 12, 110 16" stroke="#ffffff" stroke-width="1.6" stroke-linecap="round"/>
+  <circle cx="76" cy="22" r="1.5" fill="#ffffff"/>
+  <!-- Typography "Seed" with delicate subline "JEWELRY" -->
+  <text x="80" y="62" font-family="'Cormorant Garamond', Georgia, serif" font-size="26" font-weight="300" letter-spacing="4" fill="#ffffff" text-anchor="middle">Seed</text>
+  <text x="80" y="73" font-family="'-apple-system', BlinkMacSystemFont, sans-serif" font-size="7" font-weight="500" letter-spacing="5" fill="#ffffff" opacity="0.85" text-anchor="middle">JEWELRY</text>
+</svg>
+

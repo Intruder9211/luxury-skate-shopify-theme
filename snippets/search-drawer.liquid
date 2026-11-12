@@ -1,0 +1,51 @@
+{% comment %}
+  Header Search Modal & Drawer overlay
+{% endcomment %}
+<div id="SearchDrawer" class="search-drawer" aria-modal="true" role="dialog" aria-label="Search Store">
+  <div class="search-drawer__overlay" data-search-close></div>
+  <div class="search-drawer__content">
+    <div class="container" style="max-width: 800px; position: relative;">
+      <button type="button" class="search-drawer__close" data-search-close aria-label="Close search">
+        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="24" height="24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
+
+      <form action="{{ routes.search_url }}" method="get" role="search" class="search-drawer__form">
+        <label for="SearchDrawerInput" class="visually-hidden">Search skateboards, decks and gear</label>
+        <div class="search-drawer__input-group">
+          <svg class="search-drawer__search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24" width="22" height="22">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-4.35-4.35m1.35-5.65a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>
+          <input
+            id="SearchDrawerInput"
+            type="search"
+            name="q"
+            placeholder="Search skateboards, decks, wheels, trucks..."
+            class="search-drawer__input"
+            autocomplete="off"
+            autofocus
+          >
+          <input type="hidden" name="type" value="product">
+          <input type="hidden" name="options[prefix]" value="last">
+          <button type="submit" class="btn btn-gold" style="padding: 0.75rem 1.75rem; font-size: 0.8rem;">
+            Search
+          </button>
+        </div>
+      </form>
+
+      <div class="search-drawer__suggestions">
+        <span style="font-size: 0.75rem; letter-spacing: 0.15em; text-transform: uppercase; color: #888888;">Popular Searches:</span>
+        <div class="search-drawer__tags">
+          <a href="{{ routes.search_url }}?q=Skateboard">Skateboard</a>
+          <a href="{{ routes.search_url }}?q=Cruiser">Cruiser</a>
+          <a href="{{ routes.search_url }}?q=Deck">Decks</a>
+          <a href="{{ routes.search_url }}?q=Wheels">Wheels</a>
+          <a href="{{ routes.search_url }}?q=Bearings">Bearings</a>
+          <a href="{{ routes.search_url }}?q=Trucks">Trucks</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
