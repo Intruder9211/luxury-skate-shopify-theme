@@ -83,23 +83,17 @@
       </div>
 
       <div style="margin-top:1rem;">
-        {% if card_product.available %}
-          {% if card_product.has_only_default_variant %}
-            <form method="post" action="{{ routes.cart_add_url }}">
-              <input type="hidden" name="id" value="{{ card_product.selected_or_first_available_variant.id }}">
-              <button type="submit" class="btn btn-outline btn-full" style="padding:0.6rem 1rem;font-size:0.75rem;">
-                Add To Cart
-              </button>
-            </form>
-          {% else %}
-            <a href="{{ card_product.url }}" class="btn btn-outline btn-full" style="padding:0.6rem 1rem;font-size:0.75rem;">
-              View Details
-            </a>
-          {% endif %}
+        {% if card_product.has_only_default_variant %}
+          <form method="post" action="{{ routes.cart_add_url }}">
+            <input type="hidden" name="id" value="{{ card_product.selected_or_first_available_variant.id | default: card_product.variants.first.id }}">
+            <button type="submit" class="btn btn-outline btn-full" style="padding:0.6rem 1rem;font-size:0.75rem;">
+              Add To Cart
+            </button>
+          </form>
         {% else %}
-          <button type="button" class="btn btn-outline btn-full" style="padding:0.6rem 1rem;font-size:0.75rem;opacity:0.5;cursor:not-allowed;" disabled>
-            Waitlist
-          </button>
+          <a href="{{ card_product.url }}" class="btn btn-outline btn-full" style="padding:0.6rem 1rem;font-size:0.75rem;">
+            Choose Options
+          </a>
         {% endif %}
       </div>
     </div>

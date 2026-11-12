@@ -159,13 +159,8 @@
               name="add"
               id="AddToCartBtn"
               class="btn btn-seed-primary"
-              {% unless current_variant.available %}disabled{% endunless %}
             >
-              {% if current_variant.available %}
-                Add To Cart
-              {% else %}
-                Sold Out
-              {% endif %}
+              Add To Cart
             </button>
 
             <!-- Wishlist Heart Button Beside Add to Cart -->
@@ -566,13 +561,8 @@
         variantIdInput.value = matchedVariant.id;
         priceDisplay.textContent = '$' + (matchedVariant.price / 100).toFixed(2);
         
-        if (matchedVariant.available) {
-          addToCartBtn.disabled = false;
-          addToCartBtn.textContent = 'Add To Cart';
-        } else {
-          addToCartBtn.disabled = true;
-          addToCartBtn.textContent = 'Sold Out';
-        }
+        addToCartBtn.disabled = false;
+        addToCartBtn.textContent = 'Add To Cart';
 
         const mainImg = document.getElementById('ProductMainImage');
         if (mainImg) {
