@@ -38,12 +38,16 @@
         <ul class="footer-links">
           {% if section.settings.secondary_menu.links.size > 0 %}
             {% for link in section.settings.secondary_menu.links %}
+              {% assign link_url = link.url %}
+              {% if link_url == '/pages/about' %}
+                {% assign link_url = '/pages/about-us' %}
+              {% endif %}
               <li>
-                <a href="{{ link.url }}">{{ link.title }}</a>
+                <a href="{{ link_url }}">{{ link.title }}</a>
               </li>
             {% endfor %}
           {% else %}
-            <li><a href="/pages/about">About StreetRide</a></li>
+            <li><a href="/pages/about-us">About Us</a></li>
             <li><a href="/pages/contact">Contact Us</a></li>
             <li><a href="/blogs/news">The Street Journal (Blog)</a></li>
             <li><a href="{{ routes.all_products_collection_url }}">All 64 Products</a></li>
