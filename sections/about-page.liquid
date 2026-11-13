@@ -1,83 +1,391 @@
-<section class="about-hero" style="position: relative; min-height: 52vh; display: flex; align-items: center; justify-content: center; text-align: center; background: linear-gradient(180deg, #181818 0%, #0d0d0d 100%); padding: 9rem var(--page-margin) 4rem; overflow: hidden;">
-  <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: radial-gradient(circle at center, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.7) 100%);"></div>
-  <div style="position: relative; z-index: 2; max-width: 820px; margin: 0 auto;">
-    <span style="font-size: 0.8rem; text-transform: uppercase; letter-spacing: 0.28em; font-weight: 600; color: var(--color-gold, #B89C72); margin-bottom: 1rem; display: block;">
-      {{ section.settings.subheading | default: 'The StreetRide Story' }}
-    </span>
-    <h1 style="color: #ffffff; font-family: var(--font-heading-family); font-size: clamp(2.4rem, 5vw, 4rem); font-weight: 300; line-height: 1.15; margin-bottom: 1.5rem;">
-      {{ section.settings.heading | default: 'Crafted for Speed. Built for the Streets.' }}
-    </h1>
-    <p style="color: #e2e8f0; font-size: 1.1rem; line-height: 1.7; max-width: 680px; margin: 0 auto; font-weight: 300;">
+<section class="about-hero">
+  <div class="about-hero__overlay"></div>
+  <div class="container about-hero__content">
+    <span class="about-hero__badge">{{ section.settings.subheading | default: 'THE STREETRIDE STORY' }}</span>
+    <h1 class="about-hero__title">{{ section.settings.heading | default: 'Crafted for Speed. Built for the Streets.' }}</h1>
+    <p class="about-hero__subtitle">
       {{ section.settings.intro | default: 'From custom-pressed 7-ply Canadian maple decks to ultra-low friction ceramic bearings, we engineer precision skate gear built by riders, for riders.' }}
     </p>
   </div>
 </section>
 
-<div class="container" style="padding: 6rem var(--page-margin); max-width: 1000px;">
-  <!-- Narrative Section 1 -->
-  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; margin-bottom: 6rem;">
-    <div>
-      <span style="font-size: 0.75rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--color-gold, #B89C72); font-weight: 600; display: block; margin-bottom: 0.75rem;">
-        01 / Our Foundation
-      </span>
-      <h2 style="font-size: 2.2rem; font-family: var(--font-heading-family); font-weight: 400; margin-bottom: 1.25rem;">
-        Obsession With Precision
-      </h2>
-      <p style="font-size: 1.05rem; line-height: 1.8; color: #444444; margin-bottom: 1.5rem;">
+<!-- Main Story Body -->
+<div class="container about-body-container">
+  <!-- Section 1: Foundation -->
+  <div class="about-narrative-row">
+    <div class="about-narrative-text">
+      <span class="about-step-label">01 / OUR FOUNDATION</span>
+      <h2 class="about-section-heading">Obsession With Architectural Precision</h2>
+      <p class="about-paragraph">
         StreetRide was founded with one singular focus: elevating everyday skateboarding hardware to architectural standards. Every complete skateboard, cruiser, and component in our catalog is engineered to endure street impacts, ramp transitions, and relentless daily sessions.
       </p>
-      <p style="font-size: 1.05rem; line-height: 1.8; color: #444444;">
-        We source responsibly harvested Canadian maple, cold-press each ply with proprietary water-resistant resin, and calibrate trucks to the millimeter for responsive turning geometry.
+      <p class="about-paragraph">
+        We source responsibly harvested Canadian hard-rock maple, cold-press each ply with proprietary water-resistant resin, and calibrate trucks to the millimeter for responsive turning geometry.
       </p>
     </div>
-    <div style="background-color: #f4f3ef; border-radius: var(--border-radius); overflow: hidden; aspect-ratio: 4/5; display: flex; align-items: center; justify-content: center;">
-      <img src="{{ 'SR-001.png' | asset_url }}" alt="StreetRide Deck Craftsmanship" width="600" height="750" style="width: 100%; height: 100%; object-fit: cover;" loading="lazy">
-    </div>
-  </div>
-
-  <!-- Narrative Section 2: Values Grid -->
-  <div style="background-color: #f7f6f2; border-radius: 4px; padding: 4rem 3rem; margin-bottom: 6rem;">
-    <div style="text-align: center; max-width: 600px; margin: 0 auto 3rem;">
-      <span style="font-size: 0.75rem; letter-spacing: 0.22em; text-transform: uppercase; color: var(--color-gold, #B89C72); font-weight: 600; display: block; margin-bottom: 0.5rem;">
-        02 / Core Pillars
-      </span>
-      <h2 style="font-size: 2rem; font-family: var(--font-heading-family); font-weight: 400;">The StreetRide Standard</h2>
-    </div>
-
-    <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem;">
-      <div style="background: #ffffff; padding: 2.5rem 2rem; border-radius: 2px; border: 1px solid #e8e6e1;">
-        <div style="font-size: 1.6rem; color: var(--color-gold, #B89C72); font-weight: 300; margin-bottom: 1rem;">01</div>
-        <h3 style="font-size: 1.15rem; font-family: var(--font-heading-family); margin-bottom: 0.75rem;">7-Ply Canadian Maple</h3>
-        <p style="font-size: 0.92rem; color: #666666; line-height: 1.6;">Cold-pressed under high pressure for unmatched pop, stiffness, and durability on streets and ramps.</p>
-      </div>
-
-      <div style="background: #ffffff; padding: 2.5rem 2rem; border-radius: 2px; border: 1px solid #e8e6e1;">
-        <div style="font-size: 1.6rem; color: var(--color-gold, #B89C72); font-weight: 300; margin-bottom: 1rem;">02</div>
-        <h3 style="font-size: 1.15rem; font-family: var(--font-heading-family); margin-bottom: 0.75rem;">ABEC-9 & Ceramic</h3>
-        <p style="font-size: 0.92rem; color: #666666; line-height: 1.6;">Ultra-smooth bearings inspected for zero-chatter rotation, long coasting distance, and grit resistance.</p>
-      </div>
-
-      <div style="background: #ffffff; padding: 2.5rem 2rem; border-radius: 2px; border: 1px solid #e8e6e1;">
-        <div style="font-size: 1.6rem; color: var(--color-gold, #B89C72); font-weight: 300; margin-bottom: 1rem;">03</div>
-        <h3 style="font-size: 1.15rem; font-family: var(--font-heading-family); margin-bottom: 0.75rem;">Rider Tested</h3>
-        <p style="font-size: 0.92rem; color: #666666; line-height: 1.6;">Every batch of wheels, trucks, and decks is road-tested across abrasive street concrete and bowl transitions.</p>
+    <div class="about-narrative-media">
+      <img
+        src="{{ 'SR-001.png' | asset_url }}"
+        alt="StreetRide Deck Craftsmanship"
+        width="600"
+        height="750"
+        class="about-narrative-img"
+        loading="lazy"
+      >
+      <div class="about-media-badge">
+        <span>7-PLY CANADIAN HARD ROCK MAPLE</span>
       </div>
     </div>
   </div>
 
-  <!-- Narrative Section 3: Call to Action -->
-  <div style="text-align: center; max-width: 650px; margin: 0 auto; padding-top: 1rem;">
-    <h2 style="font-size: 2.4rem; font-family: var(--font-heading-family); font-weight: 400; margin-bottom: 1.25rem;">
-      Ready to Build Your Setup?
-    </h2>
-    <p style="font-size: 1.05rem; color: #666666; line-height: 1.7; margin-bottom: 2.5rem;">
-      Explore our complete 64-product catalog of boards, decks, wheels, and protective gear.
+  <!-- Section 2: Core Pillars Grid -->
+  <div class="about-pillars-panel">
+    <div class="about-pillars-header">
+      <span class="about-step-label">02 / CORE PILLARS</span>
+      <h2 class="about-section-heading" style="color: #ffffff;">The StreetRide Standard</h2>
+      <p style="color: #a3a3a3; font-size: 0.95rem; max-width: 550px; margin: 0 auto;">Three uncompromising principles that guide our design studio and component engineering.</p>
+    </div>
+
+    <div class="about-pillars-grid">
+      <div class="about-pillar-card">
+        <span class="about-pillar-num">01</span>
+        <h3 class="about-pillar-title">Cold-Pressed Deck Geometry</h3>
+        <p class="about-pillar-desc">
+          Individual cold pressing guarantees consistent concave depth, stiff pop retention, and zero delamination across every production run.
+        </p>
+      </div>
+
+      <div class="about-pillar-card">
+        <span class="about-pillar-num">02</span>
+        <h3 class="about-pillar-title">Ceramic & Titanium Bearings</h3>
+        <p class="about-pillar-desc">
+          Ultra-smooth ABEC-9 and ceramic bearing balls lubricated with high-speed synthetic oil for long coasting distance and dirt resistance.
+        </p>
+      </div>
+
+      <div class="about-pillar-card">
+        <span class="about-pillar-num">03</span>
+        <h3 class="about-pillar-title">Street & Park Tested</h3>
+        <p class="about-pillar-desc">
+          Every wheel durometer, hanger width, and hardware screw is lab-stressed and road-tested across abrasive street asphalt and bowl concrete.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Section 3: Craftsmanship Metrics & Milestones -->
+  <div class="about-metrics-row">
+    <div class="about-metric-item">
+      <div class="about-metric-num">64+</div>
+      <div class="about-metric-label">Engineered Setups & Parts</div>
+    </div>
+    <div class="about-metric-item">
+      <div class="about-metric-num">100%</div>
+      <div class="about-metric-label">Sustainable Canadian Maple</div>
+    </div>
+    <div class="about-metric-item">
+      <div class="about-metric-num">35+</div>
+      <div class="about-metric-label">Global Shipping Destinations</div>
+    </div>
+    <div class="about-metric-item">
+      <div class="about-metric-num">24/7</div>
+      <div class="about-metric-label">Rider Support & Warranty</div>
+    </div>
+  </div>
+
+  <!-- Section 4: Call to Action -->
+  <div class="about-cta-panel">
+    <span class="about-step-label">JOIN THE MOVEMENT</span>
+    <h2 class="about-cta-title">Ready to Elevate Your Skate Setup?</h2>
+    <p class="about-cta-desc">
+      Explore our complete 64-product collection of decks, completes, cruisers, and precision accessories.
     </p>
-    <a href="{{ routes.all_products_collection_url }}" class="btn btn-primary" style="padding: 1.1rem 2.5rem; font-size: 0.85rem; letter-spacing: 0.16em; text-transform: uppercase;">
-      Explore Full Catalog
-    </a>
+    <div class="about-cta-buttons">
+      <a href="{{ routes.all_products_collection_url }}" class="btn btn-primary about-cta-btn">
+        Explore Complete Catalog &rarr;
+      </a>
+      <a href="/pages/contact" class="btn btn-outline about-cta-btn">
+        Contact Our Concierge
+      </a>
+    </div>
   </div>
 </div>
+
+<style>
+  .about-hero {
+    position: relative;
+    min-height: 55vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: linear-gradient(180deg, #181818 0%, #0d0d0d 100%);
+    padding: 9rem var(--page-margin, 2rem) 4.5rem;
+    overflow: hidden;
+  }
+
+  .about-hero__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, rgba(184, 156, 114, 0.12) 0%, rgba(0, 0, 0, 0.75) 100%);
+  }
+
+  .about-hero__content {
+    position: relative;
+    z-index: 2;
+    max-width: 840px;
+    margin: 0 auto;
+  }
+
+  .about-hero__badge {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.26em;
+    font-weight: 700;
+    color: var(--color-gold, #B89C72);
+    margin-bottom: 1rem;
+    display: inline-block;
+  }
+
+  .about-hero__title {
+    color: #ffffff;
+    font-family: var(--font-heading-family, "Playfair Display", serif);
+    font-size: clamp(2.4rem, 5vw, 4rem);
+    font-weight: 300;
+    line-height: 1.15;
+    margin-bottom: 1.5rem;
+  }
+
+  .about-hero__subtitle {
+    color: #e2e8f0;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    max-width: 680px;
+    margin: 0 auto;
+    font-weight: 300;
+  }
+
+  .about-body-container {
+    padding: 6rem var(--page-margin, 2rem);
+    max-width: 1100px;
+  }
+
+  .about-narrative-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4.5rem;
+    align-items: center;
+    margin-bottom: 6rem;
+  }
+
+  .about-step-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-gold, #B89C72);
+    font-weight: 700;
+    display: block;
+    margin-bottom: 0.75rem;
+  }
+
+  .about-section-heading {
+    font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+    font-family: var(--font-heading-family, "Playfair Display", serif);
+    font-weight: 400;
+    line-height: 1.25;
+    margin-bottom: 1.5rem;
+    color: #141414;
+  }
+
+  .about-paragraph {
+    font-size: 1.02rem;
+    line-height: 1.8;
+    color: #444444;
+    margin-bottom: 1.25rem;
+  }
+
+  .about-narrative-media {
+    position: relative;
+    background-color: #f4f3ef;
+    border-radius: 4px;
+    overflow: hidden;
+    aspect-ratio: 4 / 5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
+  }
+
+  .about-narrative-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  .about-media-badge {
+    position: absolute;
+    bottom: 1.25rem;
+    left: 1.25rem;
+    background: rgba(20, 20, 20, 0.9);
+    backdrop-filter: blur(4px);
+    color: #B89C72;
+    font-size: 0.68rem;
+    letter-spacing: 0.15em;
+    font-weight: 700;
+    padding: 0.5rem 1rem;
+    border-radius: 2px;
+  }
+
+  .about-pillars-panel {
+    background-color: #141414;
+    border-radius: 6px;
+    padding: 5rem 3.5rem;
+    margin-bottom: 6rem;
+    color: #ffffff;
+  }
+
+  .about-pillars-header {
+    text-align: center;
+    max-width: 650px;
+    margin: 0 auto 3.5rem;
+  }
+
+  .about-pillars-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2rem;
+  }
+
+  .about-pillar-card {
+    background: #1c1c1c;
+    border: 1px solid #2e2e2e;
+    padding: 2.5rem 2rem;
+    border-radius: 4px;
+    transition: transform 0.25s ease, border-color 0.25s ease;
+  }
+
+  .about-pillar-card:hover {
+    transform: translateY(-4px);
+    border-color: #B89C72;
+  }
+
+  .about-pillar-num {
+    font-family: var(--font-heading-family, "Playfair Display", serif);
+    font-size: 1.8rem;
+    color: var(--color-gold, #B89C72);
+    font-weight: 400;
+    margin-bottom: 1rem;
+    display: block;
+  }
+
+  .about-pillar-title {
+    font-family: var(--font-heading-family, "Playfair Display", serif);
+    font-size: 1.2rem;
+    color: #ffffff;
+    margin-bottom: 0.75rem;
+    font-weight: 400;
+  }
+
+  .about-pillar-desc {
+    font-size: 0.88rem;
+    color: #a3a3a3;
+    line-height: 1.6;
+    margin: 0;
+  }
+
+  .about-metrics-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    padding: 3rem 0;
+    margin-bottom: 6rem;
+    border-top: 1px solid #EAE6DE;
+    border-bottom: 1px solid #EAE6DE;
+    text-align: center;
+  }
+
+  .about-metric-num {
+    font-family: var(--font-heading-family, "Playfair Display", serif);
+    font-size: 2.8rem;
+    font-weight: 400;
+    color: #141414;
+    margin-bottom: 0.35rem;
+  }
+
+  .about-metric-label {
+    font-size: 0.78rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: #666666;
+    font-weight: 600;
+  }
+
+  .about-cta-panel {
+    text-align: center;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 2rem 1rem;
+  }
+
+  .about-cta-title {
+    font-family: var(--font-heading-family, "Playfair Display", serif);
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 400;
+    margin: 0.5rem 0 1rem;
+    color: #141414;
+  }
+
+  .about-cta-desc {
+    font-size: 1.05rem;
+    color: #666666;
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+  }
+
+  .about-cta-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 1.25rem;
+    flex-wrap: wrap;
+  }
+
+  .about-cta-btn {
+    padding: 1.1rem 2.2rem;
+    font-size: 0.82rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 900px) {
+    .about-narrative-row {
+      grid-template-columns: 1fr;
+      gap: 3rem;
+    }
+    .about-pillars-grid {
+      grid-template-columns: 1fr;
+    }
+    .about-pillars-panel {
+      padding: 3.5rem 1.5rem;
+    }
+    .about-metrics-row {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 2.5rem;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .about-hero {
+      padding: 6.5rem 1rem 3.5rem;
+    }
+    .about-metrics-row {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>
 
 {% schema %}
 {
@@ -87,7 +395,7 @@
       "type": "text",
       "id": "subheading",
       "label": "Hero Subheading",
-      "default": "The StreetRide Story"
+      "default": "THE STREETRIDE STORY"
     },
     {
       "type": "text",
