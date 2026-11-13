@@ -1,0 +1,16 @@
+{
+  "sections": {
+    "main": {
+      "type": "about-page",
+      "settings": {
+        "subheading": "The StreetRide Story",
+        "heading": "Crafted for Speed. Built for the Streets.",
+        "intro": "From custom-pressed 7-ply Canadian maple decks to ultra-low friction ceramic bearings, we engineer precision skate gear built by riders, for riders."
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
+
