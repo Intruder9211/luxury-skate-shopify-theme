@@ -10,7 +10,7 @@
 {% endcomment %}
 {% assign is_transparent = false %}
 {% if section.settings.enable_transparent %}
-  {% if template.name == 'index' or template.name == 'collection' or template.suffix == 'about' %}
+  {% if template.name == 'index' or template.name == 'collection' or template.suffix == 'about' or template.suffix == 'about-us' or template.suffix == 'contact' %}
     {% assign is_transparent = true %}
   {% endif %}
 {% endif %}
