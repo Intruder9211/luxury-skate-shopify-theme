@@ -1,0 +1,15 @@
+{
+  "sections": {
+    "main": {
+      "type": "contact-page",
+      "settings": {
+        "badge": "RIDER SUPPORT & CONCIERGE",
+        "heading": "Get In Touch",
+        "subheading": "Have questions regarding custom deck builds, dimensions, orders, or international logistics? Our specialist team is here to assist."
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
