@@ -44,6 +44,7 @@
             {% endfor %}
           {% else %}
             <li><a href="{{ routes.all_products_collection_url }}">All 64 Products</a></li>
+            <li><a href="/blogs/news">The Street Journal</a></li>
             <li><a href="/products/digital-gift-card">StreetRide Gift Cards</a></li>
             <li><a href="{{ routes.search_url }}">Search Catalog</a></li>
             <li><a href="mailto:{{ shop.email | default: 'support@streetride.com' }}">Contact Support</a></li>
