@@ -305,7 +305,7 @@ body:has(.site-header-wrapper.is-sticky) .shopify-section-group-header-group {
   top: 0;
   left: 0;
   width: 100%;
-  max-width: 480px;
+  max-width: 660px; /* Expanded desktop width to ensure single-line inline layout */
   height: 100%;
   background-color: #F7F5F0; /* Seed signature warm ivory */
   color: #1a1a1a;
@@ -313,7 +313,7 @@ body:has(.site-header-wrapper.is-sticky) .shopify-section-group-header-group {
   transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
   display: flex;
   flex-direction: column;
-  box-shadow: 10px 0 40px rgba(0, 0, 0, 0.15);
+  box-shadow: 15px 0 50px rgba(0, 0, 0, 0.18);
   z-index: 2;
 }
 
@@ -322,7 +322,7 @@ body:has(.site-header-wrapper.is-sticky) .shopify-section-group-header-group {
 }
 
 .nav-drawer__top {
-  padding: 1.75rem 2.25rem 1rem;
+  padding: 2rem 2.75rem 1rem;
 }
 
 .nav-drawer__close {
@@ -343,21 +343,22 @@ body:has(.site-header-wrapper.is-sticky) .shopify-section-group-header-group {
 .nav-drawer__content {
   flex: 1 1 auto;
   overflow-y: auto;
-  padding: 1rem 2.25rem 2rem;
+  padding: 1rem 2.75rem 2.5rem;
 }
 
 .nav-drawer__columns {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 2.5rem;
+  gap: 3.5rem;
 }
 
 .nav-drawer__col-title {
   font-family: var(--font-heading-family);
-  font-size: 1.35rem;
+  font-size: 1.4rem;
   color: #1a1a1a;
-  margin-bottom: 1.5rem;
+  margin-bottom: 1.75rem;
   font-weight: 400;
+  white-space: nowrap;
 }
 
 .nav-drawer__list {
@@ -376,6 +377,7 @@ body:has(.site-header-wrapper.is-sticky) .shopify-section-group-header-group {
   align-items: center;
   position: relative;
   padding-left: 0;
+  white-space: nowrap; /* Keep all category lines strictly on a single line */
 }
 
 .nav-drawer__link::before {
@@ -402,8 +404,11 @@ body:has(.site-header-wrapper.is-sticky) .shopify-section-group-header-group {
 
 .nav-drawer__link.active-pill {
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   border: 1px solid #141414;
-  padding: 0.35rem 0.85rem;
+  padding: 0.45rem 1.15rem;
   border-radius: 999px;
   color: #141414;
   font-weight: 600;
@@ -412,6 +417,8 @@ body:has(.site-header-wrapper.is-sticky) .shopify-section-group-header-group {
   overflow: hidden;
   z-index: 1;
   background: transparent;
+  white-space: nowrap;
+  width: fit-content;
   transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
