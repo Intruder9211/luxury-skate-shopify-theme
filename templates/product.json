@@ -4,15 +4,29 @@
       "type": "product",
       "settings": {}
     },
+    "product_tabs": {
+      "type": "product-tabs",
+      "settings": {
+        "subheading": "MORE FROM STREETRIDE",
+        "heading": "Discover More Gear",
+        "tab1_title": "Best Sellers",
+        "tab2_title": "Featured Products",
+        "tab3_title": "New Arrivals",
+        "products_to_show": 4,
+        "show_view_all": true,
+        "section_bg": "#FBFBF9"
+      }
+    },
     "related-products": {
       "type": "related-products",
       "settings": {
-        "heading": "Related Products"
+        "heading": "Related Gear & Setups"
       }
     }
   },
   "order": [
     "main",
+    "product_tabs",
     "related-products"
   ]
 }

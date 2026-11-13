@@ -1,0 +1,370 @@
+<div class="product-tabs-section" style="padding-top: 5rem; padding-bottom: 5rem; background-color: {{ section.settings.section_bg | default: '#ffffff' }};">
+  <div class="container">
+    <!-- Header with Subtitle, Title & Interactive Tabs -->
+    <div class="product-tabs-header">
+      <div class="product-tabs-header__titles">
+        {% if section.settings.subheading != blank %}
+          <span class="product-tabs__subheading">{{ section.settings.subheading }}</span>
+        {% endif %}
+        <h2 class="product-tabs__heading">{{ section.settings.heading | default: 'Curated Skate Gear' }}</h2>
+      </div>
+
+      <!-- Tab Buttons -->
+      <div class="product-tabs-nav" role="tablist">
+        <button
+          type="button"
+          role="tab"
+          class="product-tabs__btn is-active"
+          data-tab-target="bestsellers-{{ section.id }}"
+          aria-selected="true"
+        >
+          {{ section.settings.tab1_title | default: 'Best Sellers' }}
+        </button>
+        <button
+          type="button"
+          role="tab"
+          class="product-tabs__btn"
+          data-tab-target="featured-{{ section.id }}"
+          aria-selected="false"
+        >
+          {{ section.settings.tab2_title | default: 'Featured Products' }}
+        </button>
+        <button
+          type="button"
+          role="tab"
+          class="product-tabs__btn"
+          data-tab-target="newarrivals-{{ section.id }}"
+          aria-selected="false"
+        >
+          {{ section.settings.tab3_title | default: 'New Arrivals' }}
+        </button>
+      </div>
+
+      {% if section.settings.show_view_all %}
+        <div class="product-tabs__view-all-wrapper">
+          <a href="{{ routes.all_products_collection_url }}" class="product-tabs__view-all-link">
+            View All Products &rarr;
+          </a>
+        </div>
+      {% endif %}
+    </div>
+
+    <!-- Tab 1: Best Sellers Panel -->
+    <div id="bestsellers-{{ section.id }}" class="product-tabs__panel is-active" role="tabpanel">
+      <div class="product-grid">
+        {% assign col_bestsellers = section.settings.collection_bestsellers | default: collections['best-sellers'] %}
+        {% assign items_limit = section.settings.products_to_show | default: 8 %}
+
+        {% if col_bestsellers != blank and col_bestsellers.products_count > 0 %}
+          {% for product in col_bestsellers.products limit: items_limit %}
+            {% render 'product-card', card_product: product %}
+          {% endfor %}
+        {% else %}
+          {% comment %}
+            Dynamic fallback: Display top products sorted by best-selling
+          {% endcomment %}
+          {% assign sorted_products = collections.all.products | sort: 'best-selling' %}
+          {% for product in sorted_products limit: items_limit %}
+            {% render 'product-card', card_product: product %}
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Tab 2: Featured Products Panel -->
+    <div id="featured-{{ section.id }}" class="product-tabs__panel" role="tabpanel" style="display: none;">
+      <div class="product-grid">
+        {% assign col_featured = section.settings.collection_featured | default: collections['featured'] %}
+
+        {% if col_featured != blank and col_featured.products_count > 0 %}
+          {% for product in col_featured.products limit: items_limit %}
+            {% render 'product-card', card_product: product %}
+          {% endfor %}
+        {% else %}
+          {% comment %}
+            Dynamic fallback: Display products tagged 'featured' or standard catalog
+          {% endcomment %}
+          {% assign featured_count = 0 %}
+          {% for product in collections.all.products %}
+            {% if product.tags contains 'featured' and featured_count < items_limit %}
+              {% render 'product-card', card_product: product %}
+              {% assign featured_count = featured_count | plus: 1 %}
+            {% endif %}
+          {% endfor %}
+          {% if featured_count < items_limit %}
+            {% for product in collections.all.products offset: 4 limit: items_limit %}
+              {% render 'product-card', card_product: product %}
+            {% endfor %}
+          {% endif %}
+        {% endif %}
+      </div>
+    </div>
+
+    <!-- Tab 3: New Arrivals Panel -->
+    <div id="newarrivals-{{ section.id }}" class="product-tabs__panel" role="tabpanel" style="display: none;">
+      <div class="product-grid">
+        {% assign col_new = section.settings.collection_new | default: collections['new-arrivals'] %}
+
+        {% if col_new != blank and col_new.products_count > 0 %}
+          {% for product in col_new.products limit: items_limit %}
+            {% render 'product-card', card_product: product %}
+          {% endfor %}
+        {% else %}
+          {% comment %}
+            Dynamic fallback: Display recently created products
+          {% endcomment %}
+          {% assign sorted_new = collections.all.products | sort: 'created_at' | reverse %}
+          {% for product in sorted_new limit: items_limit %}
+            {% render 'product-card', card_product: product %}
+          {% endfor %}
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .product-tabs-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-bottom: 3.5rem;
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid var(--color-border, #E8E6E1);
+  }
+
+  .product-tabs__subheading {
+    font-size: 0.72rem;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--color-gold, #B89C72);
+    font-weight: 700;
+    display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  .product-tabs__heading {
+    font-family: var(--font-heading-family, "Playfair Display", serif);
+    font-size: clamp(1.8rem, 3.5vw, 2.4rem);
+    font-weight: 400;
+    margin: 0;
+    color: var(--color-foreground, #141414);
+  }
+
+  .product-tabs-nav {
+    display: inline-flex;
+    background: #F4F3EF;
+    padding: 0.35rem;
+    border-radius: 999px;
+    gap: 0.25rem;
+  }
+
+  .product-tabs__btn {
+    border: none;
+    background: transparent;
+    padding: 0.65rem 1.4rem;
+    border-radius: 999px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #666666;
+    cursor: pointer;
+    transition: all 0.25s ease;
+  }
+
+  .product-tabs__btn:hover {
+    color: #141414;
+  }
+
+  .product-tabs__btn.is-active {
+    background-color: #141414;
+    color: #ffffff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12);
+  }
+
+  .product-tabs__view-all-link {
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.14em;
+    color: var(--color-foreground, #141414);
+    font-weight: 600;
+    border-bottom: 1px solid var(--color-foreground, #141414);
+    padding-bottom: 3px;
+    transition: color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .product-tabs__view-all-link:hover {
+    color: var(--color-gold, #B89C72);
+    border-color: var(--color-gold, #B89C72);
+  }
+
+  .product-tabs__panel {
+    animation: fadeInTab 0.35s ease;
+  }
+
+  @keyframes fadeInTab {
+    from {
+      opacity: 0;
+      transform: translateY(8px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  @media (max-width: 900px) {
+    .product-tabs-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.5rem;
+    }
+    .product-tabs-nav {
+      width: 100%;
+      overflow-x: auto;
+      justify-content: flex-start;
+    }
+    .product-tabs__btn {
+      white-space: nowrap;
+      padding: 0.55rem 1rem;
+      font-size: 0.72rem;
+    }
+  }
+</style>
+
+<script>
+  (function() {
+    const sectionContainer = document.currentScript.closest('.product-tabs-section');
+    if (!sectionContainer) return;
+
+    const tabButtons = sectionContainer.querySelectorAll('.product-tabs__btn');
+    const tabPanels = sectionContainer.querySelectorAll('.product-tabs__panel');
+
+    tabButtons.forEach(btn => {
+      btn.addEventListener('click', function() {
+        const targetId = this.getAttribute('data-tab-target');
+
+        tabButtons.forEach(b => {
+          b.classList.remove('is-active');
+          b.setAttribute('aria-selected', 'false');
+        });
+
+        tabPanels.forEach(p => {
+          p.classList.remove('is-active');
+          p.style.display = 'none';
+        });
+
+        this.classList.add('is-active');
+        this.setAttribute('aria-selected', 'true');
+
+        const activePanel = document.getElementById(targetId);
+        if (activePanel) {
+          activePanel.style.display = 'block';
+          activePanel.classList.add('is-active');
+        }
+      });
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Product Showcase Tabs",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Section Subheading",
+      "default": "STREETRIDE COLLECTION"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Section Heading",
+      "default": "Curated Skate Gear"
+    },
+    {
+      "type": "header",
+      "content": "Tab 1: Best Sellers"
+    },
+    {
+      "type": "text",
+      "id": "tab1_title",
+      "label": "Tab 1 Title",
+      "default": "Best Sellers"
+    },
+    {
+      "type": "collection",
+      "id": "collection_bestsellers",
+      "label": "Best Sellers Collection (Optional)"
+    },
+    {
+      "type": "header",
+      "content": "Tab 2: Featured Products"
+    },
+    {
+      "type": "text",
+      "id": "tab2_title",
+      "label": "Tab 2 Title",
+      "default": "Featured Products"
+    },
+    {
+      "type": "collection",
+      "id": "collection_featured",
+      "label": "Featured Products Collection (Optional)"
+    },
+    {
+      "type": "header",
+      "content": "Tab 3: New Arrivals"
+    },
+    {
+      "type": "text",
+      "id": "tab3_title",
+      "label": "Tab 3 Title",
+      "default": "New Arrivals"
+    },
+    {
+      "type": "collection",
+      "id": "collection_new",
+      "label": "New Arrivals Collection (Optional)"
+    },
+    {
+      "type": "header",
+      "content": "Display Settings"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 4,
+      "max": 16,
+      "step": 4,
+      "default": 8,
+      "label": "Products per tab"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "label": "Show 'View All Products' Link",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "section_bg",
+      "label": "Section Background Color",
+      "default": "#ffffff"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Product Showcase Tabs",
+      "settings": {
+        "subheading": "STREETRIDE COLLECTION",
+        "heading": "Curated Skate Gear"
+      }
+    }
+  ]
+}
+{% endschema %}

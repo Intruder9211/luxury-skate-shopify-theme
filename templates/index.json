@@ -53,11 +53,14 @@
         "title": "Explore By Category"
       }
     },
-    "featured": {
-      "type": "featured-collection",
+    "product_tabs": {
+      "type": "product-tabs",
       "settings": {
-        "subtitle": "Top Rated Gear",
-        "title": "Featured Skateboard Gear",
+        "subheading": "CURATED GEAR",
+        "heading": "Explore StreetRide Showcase",
+        "tab1_title": "Best Sellers",
+        "tab2_title": "Featured Products",
+        "tab3_title": "New Arrivals",
         "products_to_show": 8,
         "show_view_all": true
       }
@@ -67,6 +70,6 @@
     "hero",
     "manifesto",
     "collection_grid",
-    "featured"
+    "product_tabs"
   ]
 }
