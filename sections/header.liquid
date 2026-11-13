@@ -41,7 +41,7 @@
         {% endif %}
       </div>
 
-      <!-- Center: Refined Seed Brand Logo -->
+      <!-- Center: Brand Logo / Wordmark -->
       <div class="site-header__logo">
         <a href="{{ routes.root_url }}">
           {% if section.settings.logo != blank %}
@@ -56,9 +56,7 @@
           {% elsif section.settings.logo_text != blank %}
             <span class="site-header__logo-text">{{ section.settings.logo_text }}</span>
           {% else %}
-            <!-- Seed Signature Emblem & Wordmark (Swaps between white and dark automatically) -->
-            <img src="{{ 'seed-logo-white.svg' | asset_url }}" alt="Seed Jewelry" class="site-header__logo-img site-header__logo--white" width="{{ section.settings.logo_width | default: 95 }}" height="auto">
-            <img src="{{ 'seed-logo-dark.svg' | asset_url }}" alt="Seed Jewelry" class="site-header__logo-img site-header__logo--dark" width="{{ section.settings.logo_width | default: 95 }}" height="auto">
+            <span class="site-header__logo-text">{{ shop.name | default: 'CLOWN STORE' }}</span>
           {% endif %}
         </a>
       </div>
@@ -150,7 +148,7 @@
       "type": "text",
       "id": "logo_text",
       "label": "Custom Logo Text (if no image)",
-      "default": "SEED"
+      "default": "CLOWN STORE"
     },
     {
       "type": "range",
