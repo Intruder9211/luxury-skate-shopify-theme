@@ -47,12 +47,40 @@
     </div>
 
     <div class="cart-drawer__footer" style="{% if cart.item_count == 0 %}display:none;{% endif %}">
+      <!-- Discount / Gift Card Coupon Code Input -->
+      <div class="cart-drawer__coupon-box" style="margin-bottom: 1.25rem; padding-bottom: 1.25rem; border-bottom: 1px solid #EAE8E2;">
+        <label for="CartDrawerDiscountCode" style="display: block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; color: #141414; margin-bottom: 0.4rem;">
+          Discount Code or Gift Card
+        </label>
+        <div style="display: flex; gap: 0.5rem;">
+          <input
+            type="text"
+            id="CartDrawerDiscountCode"
+            placeholder="e.g. STREET20 or Gift Card"
+            style="flex: 1; padding: 0.65rem 0.85rem; font-size: 0.82rem; border: 1px solid #DCD9D1; background: #FAFAFA; border-radius: 2px; text-transform: uppercase; outline: none;"
+          >
+          <button
+            type="button"
+            id="ApplyDiscountBtn"
+            class="btn btn-outline"
+            style="padding: 0.65rem 1rem; font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; white-space: nowrap;"
+            onclick="applyDrawerDiscount()"
+          >
+            Apply
+          </button>
+        </div>
+        <div id="DrawerDiscountAppliedMsg" style="display: none; font-size: 0.78rem; color: #1C6B3E; margin-top: 0.4rem;">
+          ✓ Code ready! It will be automatically applied at checkout.
+        </div>
+      </div>
+
       <div class="cart-drawer__subtotal">
         <span>Subtotal</span>
         <span id="CartDrawerSubtotal">{{ cart.total_price | money }}</span>
       </div>
-      <p style="font-size:0.85rem;color:#64748b;margin-bottom:1rem;">Taxes and shipping calculated at checkout</p>
-      <form action="{{ routes.cart_url }}" method="post">
+      <p style="font-size:0.85rem;color:#64748b;margin-bottom:1rem;">Taxes, discounts, and shipping calculated at checkout</p>
+      <form action="{{ routes.cart_url }}" method="post" id="CartDrawerCheckoutForm">
+        <input type="hidden" name="discount" id="CartDrawerHiddenDiscount" value="">
         <button type="submit" name="checkout" class="btn btn-primary btn-full">Proceed to Checkout</button>
       </form>
       <div style="text-align:center;margin-top:0.75rem;">

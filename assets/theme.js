@@ -263,3 +263,25 @@ document.addEventListener('DOMContentLoaded', () => {
   initOffCanvasNav();
   initHeaderScroll();
 });
+
+
+// Apply Discount & Gift Card Code from Cart Drawer
+window.applyDrawerDiscount = function() {
+  const input = document.getElementById('CartDrawerDiscountCode');
+  const hiddenInput = document.getElementById('CartDrawerHiddenDiscount');
+  const msg = document.getElementById('DrawerDiscountAppliedMsg');
+  const form = document.getElementById('CartDrawerCheckoutForm');
+  if (!input) return;
+
+  const code = input.value.trim();
+  if (code) {
+    if (hiddenInput) hiddenInput.value = code;
+    if (form) form.action = '/checkout?discount=' + encodeURIComponent(code);
+    if (msg) {
+      msg.textContent = `✓ Code "${code.toUpperCase()}" applied to checkout!`;
+      msg.style.display = 'block';
+    }
+  } else {
+    if (msg) msg.style.display = 'none';
+  }
+};
