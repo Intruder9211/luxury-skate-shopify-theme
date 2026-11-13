@@ -43,30 +43,51 @@
             <li><a href="{{ routes.all_products_collection_url }}?filter.p.product_type=Skateboard+Trucks" class="nav-drawer__link">Trucks</a></li>
           </ul>
 
-          <div style="margin-top: 2rem;">
-            <a href="/blogs/news" class="nav-drawer__sub-link" style="color: #141414; font-weight: 600;">
-              📖 StreetRide Journal
-            </a>
-          </div>
-
-          <div style="margin-top: 0.75rem;">
-            <a href="/products/digital-gift-card" class="nav-drawer__sub-link" style="color: #B89C72; font-weight: 600;">
-              ★ StreetRide Gift Card
-            </a>
-          </div>
-
-          <div style="margin-top: 1rem;">
-            {% if section.settings.about_link != blank %}
-              <a href="{{ section.settings.about_link }}" class="nav-drawer__sub-link">
-                {{ section.settings.about_title | default: 'About StreetRide' }}
-              </a>
-            {% else %}
-              <a href="/pages/about" class="nav-drawer__sub-link">{{ section.settings.about_title | default: 'About StreetRide' }}</a>
-            {% endif %}
-          </div>
-
-          <div style="margin-top: 0.75rem;">
-            <a href="/pages/contact" class="nav-drawer__sub-link">Contact Concierge</a>
+          <!-- Editorial & Support Quick Links -->
+          <div class="nav-drawer__editorial-group">
+            <span class="nav-drawer__group-label">EXPLORE & DISCOVER</span>
+            <ul class="nav-drawer__editorial-list">
+              <li>
+                <a href="/pages/about-us" class="nav-drawer__editorial-link">
+                  <span class="nav-drawer__editorial-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                  </span>
+                  <span>About Us</span>
+                </a>
+              </li>
+              <li>
+                <a href="/blogs/news" class="nav-drawer__editorial-link">
+                  <span class="nav-drawer__editorial-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"></path>
+                    </svg>
+                  </span>
+                  <span>The Street Journal</span>
+                </a>
+              </li>
+              <li>
+                <a href="/products/digital-gift-card" class="nav-drawer__editorial-link nav-drawer__editorial-link--highlight">
+                  <span class="nav-drawer__editorial-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 00-2 2v6a2 2 0 002 2h14a2 2 0 002-2v-6a2 2 0 00-2-2H5z"></path>
+                    </svg>
+                  </span>
+                  <span>StreetRide Gift Card</span>
+                </a>
+              </li>
+              <li>
+                <a href="/pages/contact" class="nav-drawer__editorial-link">
+                  <span class="nav-drawer__editorial-icon">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" width="16" height="16">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                    </svg>
+                  </span>
+                  <span>Contact Concierge</span>
+                </a>
+              </li>
+            </ul>
           </div>
         </div>
 
@@ -83,16 +104,6 @@
             <li><a href="{{ routes.all_products_collection_url }}?filter.p.product_type=Skateboard+Maintenance&filter.p.product_type=Skateboard+Storage&filter.p.product_type=Skateboard+Parts&filter.p.product_type=Skateboard+Bags" class="nav-drawer__link">Maintenance & Storage</a></li>
             <li><a href="{{ routes.all_products_collection_url }}" class="nav-drawer__link active-pill">View All 64 Products</a></li>
           </ul>
-
-          <div style="margin-top: 2rem;">
-            {% if section.settings.contact_link != blank %}
-              <a href="{{ section.settings.contact_link }}" class="nav-drawer__sub-link">
-                {{ section.settings.contact_title | default: 'Contact Support' }}
-              </a>
-            {% else %}
-              <a href="mailto:{{ shop.email | default: 'support@streetride.com' }}" class="nav-drawer__sub-link">{{ section.settings.contact_title | default: 'Contact Support' }}</a>
-            {% endif %}
-          </div>
         </div>
       </div>
     </div>
