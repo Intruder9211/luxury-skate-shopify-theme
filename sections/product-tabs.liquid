@@ -236,38 +236,37 @@
 </style>
 
 <script>
-  (function() {
-    const sectionContainer = document.currentScript.closest('.product-tabs-section');
-    if (!sectionContainer) return;
+  document.addEventListener('click', function(e) {
+    const btn = e.target.closest('.product-tabs__btn');
+    if (!btn) return;
+    e.preventDefault();
 
-    const tabButtons = sectionContainer.querySelectorAll('.product-tabs__btn');
-    const tabPanels = sectionContainer.querySelectorAll('.product-tabs__panel');
+    const section = btn.closest('.product-tabs-section');
+    if (!section) return;
 
-    tabButtons.forEach(btn => {
-      btn.addEventListener('click', function() {
-        const targetId = this.getAttribute('data-tab-target');
+    const targetId = btn.getAttribute('data-tab-target');
+    const tabButtons = section.querySelectorAll('.product-tabs__btn');
+    const tabPanels = section.querySelectorAll('.product-tabs__panel');
 
-        tabButtons.forEach(b => {
-          b.classList.remove('is-active');
-          b.setAttribute('aria-selected', 'false');
-        });
-
-        tabPanels.forEach(p => {
-          p.classList.remove('is-active');
-          p.style.display = 'none';
-        });
-
-        this.classList.add('is-active');
-        this.setAttribute('aria-selected', 'true');
-
-        const activePanel = document.getElementById(targetId);
-        if (activePanel) {
-          activePanel.style.display = 'block';
-          activePanel.classList.add('is-active');
-        }
-      });
+    tabButtons.forEach(b => {
+      b.classList.remove('is-active');
+      b.setAttribute('aria-selected', 'false');
     });
-  })();
+
+    tabPanels.forEach(p => {
+      p.classList.remove('is-active');
+      p.style.display = 'none';
+    });
+
+    btn.classList.add('is-active');
+    btn.setAttribute('aria-selected', 'true');
+
+    const activePanel = section.querySelector('#' + targetId);
+    if (activePanel) {
+      activePanel.style.display = 'block';
+      activePanel.classList.add('is-active');
+    }
+  });
 </script>
 
 {% schema %}
@@ -368,3 +367,4 @@
   ]
 }
 {% endschema %}
+
